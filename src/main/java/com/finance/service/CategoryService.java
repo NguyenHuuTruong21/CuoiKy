@@ -24,15 +24,27 @@ public class CategoryService {
         return categoryDAO.saveCategory(category);
     }
 	
-	public Category getCategoryById(int id) {
-        return categoryDAO.getCategoryById(id);
+//    public Category getCategoryById(int id) {
+//        return categoryDAO.getCategoryById(id);
+//    }
+	
+	public Category getCategoryById(int id, int userId) {
+        return categoryDAO.getCategoryById(id, userId);
     }
 
-    public List<Category> getAllCategories() {
-        return categoryDAO.getAllCategories();
+    public List<Category> getAllCategories(int userId) {
+        return categoryDAO.getAllCategories(userId);
     }
 	
-	public void deleteCategory(int id) {
-		categoryDAO.deleteCategory(id);
-	}
+//    public void deleteCategory(int id) {
+//        categoryDAO.deleteCategory(id);
+//    }
+    
+    public void deleteCategory(int id, int userId) {
+        Category category = getCategoryById(id, userId);
+        if (category == null) {
+            throw new IllegalArgumentException("Category not found or you do not have permission to delete this category");
+        }
+        categoryDAO.deleteCategory(id, userId);
+    }
 }

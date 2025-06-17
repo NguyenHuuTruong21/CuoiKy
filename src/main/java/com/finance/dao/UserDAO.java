@@ -8,6 +8,7 @@ import java.sql.Statement;
 
 import javax.management.RuntimeErrorException;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 
 import com.finance.config.DatabaseConfig;
@@ -63,7 +64,7 @@ public class UserDAO {
 				PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 			stmt.setString(1, user.getName());
 			stmt.setString(2, user.getUsername());
-			stmt.setString(3, user.getPassword());
+			stmt.setString(3, BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 			stmt.setString(4, user.getRole());
 			stmt.executeUpdate();
 			ResultSet rs = stmt.getGeneratedKeys();

@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.finance.entities.Account;
+import com.finance.entities.User;
 import com.finance.service.AccountService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AccountController {
@@ -20,41 +23,61 @@ public class AccountController {
 	}
 	
 	@GetMapping("/accounts")
-	public String listAccounts(Model model) {
-		model.addAttribute("accounts", accountService.getAllAccounts());
-		return "account_list";
-	}
+    public String listAccounts(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        int userId = user.getUserId();
+        model.addAttribute("accounts", accountService.getAllAccounts(userId));
+        return "account_list";
+    }
 	
 	@GetMapping("/account/add")
-	public String showAddForm(Model model) {
-		model.addAttribute("account", new Account());
-		return "account_form";
-	}
+    public String showAddForm(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("account", new Account());
+        return "account_form";
+    }
 	
 	@PostMapping("/account/add")
     public String addAccount(
-            @RequestParam String id,
-            @RequestParam String name,
-            @RequestParam double balance,
-            Model model) {
-		try {
+            @RequestParam("name") String name,
+            @RequestParam("balance") double balance,
+            Model model,
+            HttpSession session) {
+        try {
+            User user = (User) session.getAttribute("loggedInUser");
+            if (user == null) {
+                return "redirect:/login";
+            }
+            int userId = user.getUserId();
             Account account = new Account(0, name, balance);
-            accountService.saveAccount(account);
+            account.setUserId(userId);
+            accountService.saveAccount(account); // Giả định saveAccount không cần userId, nếu cần thì thêm
             return "redirect:/accounts";
         } catch (Exception e) {
             model.addAttribute("error", "Error adding account: " + e.getMessage());
             return "account_form";
         }
     }
-	
-	@GetMapping("/account/delete")
-	public String deleteAccount(@RequestParam int id, Model model) {
-		try {
-            accountService.deleteAccount(id);
+
+    @GetMapping("/account/delete")
+    public String deleteAccount(@RequestParam("id") int id, Model model, HttpSession session) {
+        try {
+            User user = (User) session.getAttribute("loggedInUser");
+            if (user == null) {
+                return "redirect:/login";
+            }
+            int userId = user.getUserId();
+            accountService.deleteAccount(id); // Giả định deleteAccount không cần userId, nếu cần thì thêm
             return "redirect:/accounts";
         } catch (Exception e) {
             model.addAttribute("error", "Error deleting account: " + e.getMessage());
             return "redirect:/accounts";
         }
-	}
+    }
 }

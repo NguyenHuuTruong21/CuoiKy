@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,143 +14,157 @@ import com.finance.dao.TransactionDAO;
 import com.finance.entities.Account;
 import com.finance.entities.Budget;
 import com.finance.entities.Category;
+import com.finance.entities.Reminder;
+import com.finance.entities.Status;
 import com.finance.entities.Transaction;
 
 @Service
 public class TransactionService {
-	private final TransactionDAO transactionDAO;
-	private final CategoryService categoryService;
-	private final AccountService accountService;
-	private final BudgetService budgetService;
-	private final BudgetDAO budgetDAO;
-	
-	@Autowired
+    private final TransactionDAO transactionDAO;
+    private final CategoryService categoryService;
+    private final AccountService accountService;
+    private final BudgetService budgetService;
+    private final BudgetDAO budgetDAO;
+    private final ReminderService reminderService;
+
+    @Autowired
     public TransactionService(TransactionDAO transactionDAO, CategoryService categoryService,
-                              AccountService accountService, BudgetService budgetService, BudgetDAO budgetDAO) {
+                              AccountService accountService, BudgetService budgetService, 
+                              BudgetDAO budgetDAO, ReminderService reminderService) {
         this.transactionDAO = transactionDAO;
         this.categoryService = categoryService;
         this.accountService = accountService;
         this.budgetService = budgetService;
         this.budgetDAO = budgetDAO;
+        this.reminderService = reminderService;
     }
-	
-	public Transaction addTransaction(String type, double amount, LocalDate date, int categoryId, String description, int accountId) {
-        if (type == null || amount < 0 || date == null) {
-            throw new IllegalArgumentException("Invalid transaction parameters");
-        }
-        Category category = categoryService.getCategoryById(categoryId);
-        if (category == null) {
-            throw new IllegalArgumentException("Category not found");
-        }
-        Account account = accountService.getAccountById(accountId);
-        if (account == null) {
-            throw new IllegalArgumentException("Account not found");
-        }
-        Transaction transaction = new Transaction(0, type, amount, date, category, description, account);
-        int newId = transactionDAO.saveTransaction(transaction);
-        transaction.setId(newId);
 
-        accountService.updateBalance(accountId, amount, type);
+    public int saveTransaction(Transaction transaction, int userId) {
+        if (transaction.getType() == null || transaction.getDate() == null || transaction.getCategory() == null) {
+            throw new IllegalArgumentException("Type, date, and category must not be null");
+        }
 
-        if ("expense".equalsIgnoreCase(type)) {
-            Budget budget = budgetService.getBudgetByCategoryId(categoryId);
-            if (budget != null) {
-                budget.setSpent(budget.getSpent() + amount);
-                budgetDAO.saveBudget(budget);
+        // Kiểm tra số dư tài khoản nếu là giao dịch chi tiêu
+        if ("expense".equalsIgnoreCase(transaction.getType())) {
+            Account account = accountService.getAccountById(transaction.getAccountId(), userId);
+            if (account == null) {
+                throw new IllegalArgumentException("Account not found");
+            }
+            double currentBalance = account.getBalance();
+            double totalExpenses = getTotalExpenses(transaction.getAccountId(), userId);
+            double availableBalance = currentBalance - totalExpenses;
+
+            if (availableBalance < transaction.getAmount()) {
+                throw new IllegalArgumentException("Số dư trong tài khoản của bạn không đủ");
             }
         }
-        return transaction;
-    }
-	
-	public Transaction getTransactionById(int id) {
-        return transactionDAO.getTransactionById(id);
+
+        // Thêm giao dịch
+        int transactionId = transactionDAO.saveTransaction(transaction);
+
+        // Cập nhật số dư tài khoản
+        accountService.updateBalance(transaction.getAccountId(), userId, transaction.getAmount(), transaction.getType());
+
+        // Cập nhật trạng thái Budget nếu giao dịch là income và liên quan đến category có budget
+        if ("income".equalsIgnoreCase(transaction.getType())) {
+            updateBudgetStatusAfterTransaction(transaction, userId);
+        }
+
+        return transactionId;
     }
 
-    public List<Transaction> getAllTransactions() {
-        return transactionDAO.getAllTransactions();
+    public Transaction getTransactionById(int userId, int id) {
+        return transactionDAO.getTransactionById(userId, id);
     }
-	
-    public void updateTransaction(int id, String type, double amount, LocalDate date, int categoryId, String description, int accountId) {
-        Transaction existingTransaction = getTransactionById(id);
+
+    public List<Transaction> getAllTransactions(int userId) {
+        return transactionDAO.getAllTransactions(userId);
+    }
+
+    public void updateTransaction(int userId, int id, String type, double amount, LocalDate date, int categoryId, String description, int accountId) {
+        if (type == null || date == null || categoryId == 0) {
+            throw new IllegalArgumentException("Type, date, and category must not be null");
+        }
+        Transaction existingTransaction = getTransactionById(userId, id);
         if (existingTransaction == null) {
             throw new IllegalArgumentException("Transaction not found");
         }
 
-        accountService.updateBalance(existingTransaction.getAccount().getId(), existingTransaction.getAmount(),
-                existingTransaction.getType().equalsIgnoreCase("income") ? "expense" : "income");
+        // Lấy thông tin trước khi cập nhật
+        double oldAmount = existingTransaction.getAmount();
+        String oldType = existingTransaction.getType();
+        int oldAccountId = existingTransaction.getAccountId();
+        int oldCategoryId = existingTransaction.getCategory().getId();
 
-        Category category = categoryService.getCategoryById(categoryId);
-        if (category == null) {
-            throw new IllegalArgumentException("Category not found");
-        }
-        Account account = accountService.getAccountById(accountId);
-        if (account == null) {
-            throw new IllegalArgumentException("Account not found");
-        }
+        // Cập nhật giao dịch
+        transactionDAO.updateTransaction(userId, id, type, amount, date, categoryId, description, accountId);
 
-        if ("expense".equalsIgnoreCase(existingTransaction.getType()) || "expense".equalsIgnoreCase(type)) {
-            Budget budget = budgetService.getBudgetByCategoryId(categoryId);
-            if (budget != null) {
-                if ("expense".equalsIgnoreCase(existingTransaction.getType())) {
-                    budget.setSpent(budget.getSpent() - existingTransaction.getAmount());
-                }
-                if ("expense".equalsIgnoreCase(type)) {
-                    budget.setSpent(budget.getSpent() + amount);
-                }
-                budgetDAO.saveBudget(budget);
-            }
+        // Cập nhật số dư tài khoản
+        if (oldAccountId != accountId || !oldType.equals(type) || oldAmount != amount) {
+            accountService.updateBalance(oldAccountId, userId, oldAmount, oldType.equals("income") ? "expense" : "income");
+            accountService.updateBalance(accountId, userId, amount, type);
+        } else if (!oldType.equals(type) || oldAmount != amount) {
+            accountService.updateBalance(accountId, userId, amount - oldAmount, type);
         }
 
-        accountService.updateBalance(accountId, amount, type);
-
-        existingTransaction.setType(type);
-        existingTransaction.setAmount(amount);
-        existingTransaction.setDate(date);
-        existingTransaction.setCategory(category);
-        existingTransaction.setDescription(description);
-        existingTransaction.setAccount(account);
-        transactionDAO.saveTransaction(existingTransaction);
+        // Cập nhật trạng thái Budget nếu giao dịch là income
+        Transaction updatedTransaction = getTransactionById(userId, id);
+        if ("income".equalsIgnoreCase(updatedTransaction.getType())) {
+            updateBudgetStatusAfterTransaction(updatedTransaction, userId);
+        }
     }
-	
-    public void deleteTransaction(int id) {
-        Transaction transaction = getTransactionById(id);
+
+    public void deleteTransaction(int userId, int id) {
+        Transaction transaction = getTransactionById(userId, id);
         if (transaction == null) {
             throw new IllegalArgumentException("Transaction not found");
         }
 
-        accountService.updateBalance(transaction.getAccount().getId(), transaction.getAmount(),
+        // Cập nhật số dư tài khoản
+        accountService.updateBalance(transaction.getAccountId(), userId, transaction.getAmount(),
                 transaction.getType().equalsIgnoreCase("income") ? "expense" : "income");
 
-        if ("expense".equalsIgnoreCase(transaction.getType())) {
-            Budget budget = budgetService.getBudgetByCategoryId(transaction.getCategory().getId());
-            if (budget != null) {
-                budget.setSpent(budget.getSpent() - transaction.getAmount());
-                budgetDAO.saveBudget(budget);
-            }
+        // Xóa giao dịch
+        transactionDAO.deleteTransaction(userId, id);
+
+        // Cập nhật trạng thái Budget nếu giao dịch là income
+        if ("income".equalsIgnoreCase(transaction.getType())) {
+            updateBudgetStatusAfterTransaction(null, userId);
         }
-        transactionDAO.deleteTransaction(id);
     }
-	
-    public double getTotalIncome() {
-        return getAllTransactions().stream()
+
+    public double getTotalIncome(int userId) {
+        return getAllTransactions(userId).stream()
                 .filter(t -> "income".equalsIgnoreCase(t.getType()))
                 .mapToDouble(Transaction::getAmount)
                 .sum();
     }
 
-    public double getTotalExpenses() {
-        return getAllTransactions().stream()
+    public double getTotalIncomeByCategory(int categoryId, int userId) {
+        return getAllTransactions(userId).stream()
+                .filter(t -> "income".equalsIgnoreCase(t.getType()) && t.getCategory().getId() == categoryId)
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+    }
+
+    public double getTotalExpenses(int accountId, int userId) {
+        return transactionDAO.getTotalExpensesByAccount(accountId, userId);
+    }
+
+    public double getTotalExpenses(int userId) {
+        List<Transaction> transactions = getAllTransactions(userId);
+        return transactions.stream()
                 .filter(t -> "expense".equalsIgnoreCase(t.getType()))
                 .mapToDouble(Transaction::getAmount)
                 .sum();
     }
-    
-    public double getRemainingBudget() {
-        return budgetService.getRemainingBudget();
+
+    public double getRemainingBudget(int userId) {
+        return budgetService.getRemainingBudget(userId);
     }
-    
-    public Map<String, Double> getMonthlyReport(int year, int month) {
-        List<Transaction> transactions = transactionDAO.getAllTransactions().stream()
+
+    public Map<String, Double> getMonthlyReport(int userId, int year, int month) {
+        List<Transaction> transactions = transactionDAO.getAllTransactions(userId).stream()
                 .filter(t -> t.getDate().getYear() == year && t.getDate().getMonthValue() == month)
                 .collect(Collectors.toList());
 
@@ -169,9 +182,9 @@ public class TransactionService {
         report.put("expenses", totalExpenses);
         return report;
     }
-    
-    public Map<String, Double> getYearlyReport(int year) {
-        List<Transaction> transactions = transactionDAO.getAllTransactions().stream()
+
+    public Map<String, Double> getYearlyReport(int userId, int year) {
+        List<Transaction> transactions = transactionDAO.getAllTransactions(userId).stream()
                 .filter(t -> t.getDate().getYear() == year)
                 .collect(Collectors.toList());
 
@@ -189,13 +202,36 @@ public class TransactionService {
         report.put("expenses", totalExpenses);
         return report;
     }
-    
-    public Map<String, Double> getExpenseByCategory() {
-        return transactionDAO.getAllTransactions().stream()
+
+    public Map<String, Double> getExpenseByCategory(int userId) {
+        return transactionDAO.getAllTransactions(userId).stream()
                 .filter(t -> "expense".equalsIgnoreCase(t.getType()))
                 .collect(Collectors.groupingBy(
                         t -> t.getCategory().getName(),
                         Collectors.summingDouble(Transaction::getAmount)
                 ));
+    }
+
+    private void updateBudgetStatusAfterTransaction(Transaction transaction, int userId) {
+        List<Budget> budgets = budgetService.getAllBudgets(userId);
+        for (Budget budget : budgets) {
+            int categoryId = budget.getCategory().getId();
+            // Tính số tiền tích lũy từ các giao dịch income của category này
+            double accumulatedAmount = getTotalIncomeByCategory(categoryId, userId);
+
+            // Lấy trạng thái hiện tại
+            Status oldStatus = budget.getStatus();
+
+            // Cập nhật trạng thái
+            budgetService.updateBudgetStatus(budget, accumulatedAmount);
+
+            // Nếu trạng thái chuyển sang Done, tạo Reminder
+            if (budget.getStatus() == Status.Done && oldStatus != Status.Done) {
+                Reminder reminder = new Reminder(0, "Mục tiêu hoàn thành", budget.getAmount(), 
+                        LocalDate.now(), false, userId);
+                reminder.setBillName("Bạn đã tiết kiệm đủ tiền!");
+                reminderService.saveReminder(reminder);
+            }
+        }
     }
 }

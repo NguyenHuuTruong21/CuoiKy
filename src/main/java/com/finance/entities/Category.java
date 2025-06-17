@@ -4,6 +4,7 @@ public class Category {
 	private int id;
     private String name;
     private String type; // "income" hoặc "expense"
+    private int userId;
     
     public Category() {}
 
@@ -36,4 +37,13 @@ public class Category {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	
 }

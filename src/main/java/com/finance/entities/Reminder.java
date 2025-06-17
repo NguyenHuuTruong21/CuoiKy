@@ -8,16 +8,27 @@ public class Reminder {
     private double amount;
     private LocalDate dueDate;
     private boolean isPaid;
+    private int userId;
     
     public Reminder() {}
 
-	public Reminder(int id, String billName, double amount, LocalDate dueDate) {
-		this.id = id;
-		this.billName = billName;
-		this.amount = amount;
-		this.dueDate = dueDate;
-		this.isPaid = false;
-	}
+//	public Reminder(int id, String billName, double amount, LocalDate dueDate, int userId) {
+//		this.id = id;
+//		this.billName = billName;
+//		this.amount = amount;
+//		this.dueDate = dueDate;
+//		this.isPaid = false;
+//		this.userId = userId;
+//	}
+    
+    public Reminder(int id, String billName, double amount, LocalDate dueDate, boolean isPaid, int userId) {
+        this.id = id;
+        this.billName = billName;
+        this.amount = amount;
+        this.dueDate = dueDate;
+        this.isPaid = isPaid;
+        this.userId = userId;
+    }
 
 	public int getId() {
 		return id;
@@ -58,4 +69,13 @@ public class Reminder {
 	public void setPaid(boolean isPaid) {
 		this.isPaid = isPaid;
 	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	
 }

@@ -9,23 +9,58 @@
     <title>Expense Chart - Personal Finance Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+        .chart-container {
+            position: relative;
+            height: 450px;
+            width: 100%;
+        }
+        .card-custom {
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .btn-back {
+            border-radius: 30px;
+            font-weight: 500;
+        }
+        h1.display-6 {
+            font-weight: 700;
+            color: #343a40;
+        }
+    </style>
 </head>
 <body class="bg-light">
     <div class="container mt-5">
-        <h1 class="display-6 fw-bold mb-4">Expense Chart by Category</h1>
-        <div class="card shadow-sm">
+        <h1 class="display-6 text-center mb-4">💸 Expense Chart by Category</h1>
+
+        <div class="card card-custom shadow-sm">
             <div class="card-body">
-                <div class="chart-container" style="position: relative; height: 400px; width: 100%;">
+                <div class="chart-container">
                     <canvas id="expenseChart"></canvas>
                 </div>
             </div>
         </div>
-        <a href="${pageContext.request.contextPath}/reports" class="btn btn-secondary mt-3">Back to Reports</a>
+
+        <div class="text-center mt-4">
+            <a href="${pageContext.request.contextPath}/reports" class="btn btn-secondary btn-back">
+                <i class="fas fa-arrow-left"></i> Back to Reports
+            </a>
+        </div>
     </div>
+
     <script>
         const ctx = document.getElementById('expenseChart').getContext('2d');
         const labels = [<c:forEach var="entry" items="${expenseData}" varStatus="loop">'${entry.key}'${not loop.last ? ',' : ''}</c:forEach>];
         const data = [<c:forEach var="entry" items="${expenseData}" varStatus="loop">${entry.value}${not loop.last ? ',' : ''}</c:forEach>];
+
+        const colorPalette = [
+            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+            '#FF9F40', '#E57373', '#64B5F6', '#81C784', '#FFD54F'
+        ];
+
         new Chart(ctx, {
             type: 'pie',
             data: {
@@ -33,29 +68,9 @@
                 datasets: [{
                     label: 'Expenses by Category',
                     data: data,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)'
-                    ],
-                    borderWidth: 1
+                    backgroundColor: colorPalette,
+                    borderColor: '#fff',
+                    borderWidth: 2
                 }]
             },
             options: {
@@ -63,17 +78,24 @@
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        position: 'top',
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 14 },
+                            color: '#333'
+                        }
                     },
                     title: {
                         display: true,
-                        text: 'Expenses by Category',
-                        font: { size: 18 }
+                        text: 'Expense Distribution by Category',
+                        font: { size: 20 },
+                        color: '#212529'
                     }
                 }
             }
         });
     </script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

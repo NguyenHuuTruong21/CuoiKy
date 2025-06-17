@@ -23,7 +23,7 @@
             <table class="table table-bordered table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
-                        <th>ID</th>
+                        <!-- <th>ID</th> -->
                         <th>Name</th>
                         <th>Type</th>
                         <th>Actions</th>
@@ -32,7 +32,7 @@
                 <tbody>
                     <c:forEach var="category" items="${categories}">
                         <tr>
-                            <td>${category.id}</td>
+                            <%-- <td>${category.id}</td> --%>
                             <td>${category.name}</td>
                             <td>
                                 <span class="badge ${category.type == 'income' ? 'bg-success' : 'bg-danger'}">

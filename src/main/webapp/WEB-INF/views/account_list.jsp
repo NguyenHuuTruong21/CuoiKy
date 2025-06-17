@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,43 +7,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account List - Personal Finance Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
     <div class="container mt-5">
-        <h1 class="display-6 fw-bold mb-4">Account List</h1>
-        <c:if test="${not empty error}">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                ${error}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="card shadow-lg rounded-4">
+            <div class="card-body p-4">
+                <h1 class="display-6 fw-bold mb-4 text-primary">
+                    <i class="fas fa-university"></i>Account List
+                </h1>
+
+                <c:if test="${not empty error}">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${error}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </c:if>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <a href="${pageContext.request.contextPath}/account/add" class="btn btn-success">
+                        <i class="fas fa-plus me-1"></i>Add New Account
+                    </a>
+                    <a href="${pageContext.request.contextPath}/" class="btn btn-outline-secondary">
+                        <i class="fas fa-home me-1"></i>Back to Home
+                    </a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Name</th>
+                                <th>Balance</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="account" items="${accounts}">
+                                <tr>
+                                    <td class="fw-semibold">${account.name}</td>
+                                    <td>
+                                        <span class="badge rounded-pill px-3 py-2 ${account.balance >= 0 ? 'bg-success' : 'bg-danger'}">
+                                            ${account.balance}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="${pageContext.request.contextPath}/account/delete?id=${account.id}" 
+                                           class="btn btn-sm btn-outline-danger" 
+                                           onclick="return confirm('Are you sure you want to delete this account?');">
+                                            <i class="fas fa-trash-alt me-1"></i>Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </c:if>
-        <a href="${pageContext.request.contextPath}/account/add" class="btn btn-success mb-3">Add New Account</a>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Balance</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="account" items="${accounts}">
-                        <tr>
-                            <td>${account.id}</td>
-                            <td>${account.name}</td>
-                            <td class="${account.balance >= 0 ? 'text-success' : 'text-danger'}">${account.balance}</td>
-                            <td>
-                                <a href="${pageContext.request.contextPath}/account/delete?id=${account.id}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this account?');">Delete</a>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
         </div>
-        <a href="${pageContext.request.contextPath}/" class="btn btn-secondary mt-3">Back to Home</a>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
 </body>
 </html>

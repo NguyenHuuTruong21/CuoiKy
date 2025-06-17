@@ -4,6 +4,7 @@ public class Account {
 	private int id;
 	private String name;
 	private double balance;
+	private int userId;
 	
 	public Account() {}
 
@@ -35,6 +36,14 @@ public class Account {
 
 	public void setBalance(double balance) {
 		this.balance = balance;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 	
 }

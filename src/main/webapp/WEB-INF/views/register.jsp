@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,10 +22,10 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </c:if>
-                    <form action="/register" method="post">
+                    <form action="${pageContext.request.contextPath}/register" method="post">
                         <div class="mb-3">
                             <label for="name" class="form-label">Full Name</label>
-                            <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" required>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" required autofocus>
                         </div>
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
@@ -36,7 +37,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Register</button>
                     </form>
-                    <div class="text-center mt-3">
+                    <div class="card-footer text-center mt-3">
                         <small class="text-muted">Already have an account? <a href="${pageContext.request.contextPath}/login">Login here</a></small>
                     </div>
                 </div>

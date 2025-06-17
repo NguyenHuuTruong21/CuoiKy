@@ -24,28 +24,56 @@ public class AccountService {
         return accountDAO.saveAccount(account);
     }
 	
-	public Account getAccountById(int id) {
-        return accountDAO.getAccountById(id);
+//    public Account getAccountById(int id) {
+//        return accountDAO.getAccountById(id);
+//    }
+	
+	public Account getAccountById(int id, int userId) {
+        Account account = accountDAO.getAccountById(id, userId);
+        if (account == null) {
+            throw new IllegalArgumentException("Account not found or you do not have permission to access this account");
+        }
+        return account;
     }
 	
-	public List<Account> getAllAccounts() {
-        return accountDAO.getAllAccounts();
+    public List<Account> getAllAccounts(int userId) {
+        return accountDAO.getAllAccounts(userId);
     }
 	
-	public void deleteAccount(int id) {
+    public void deleteAccount(int id) {
         accountDAO.deleteAccount(id);
     }
 	
-	public void updateBalance(int id, double amount, String type) {
-        Account account = getAccountById(id);
-        if (account == null) {
-            throw new IllegalArgumentException("Account not found");
-        }
+//    public void updateBalance(int id, double amount, String type) {
+//        Account account = getAccountById(id);
+//        if (account == null) {
+//            throw new IllegalArgumentException("Account not found");
+//        }
+//        if ("income".equalsIgnoreCase(type)) {
+//            account.setBalance(account.getBalance() + amount);
+//        } else if ("expense".equalsIgnoreCase(type)) {
+//            account.setBalance(account.getBalance() - amount);
+//        }
+//        accountDAO.saveAccount(account);
+//    }
+    
+    public double getAccountBalance(int accountId, int userId) {
+        Account account = getAccountById(accountId, userId);
+        return account.getBalance();
+    }
+    
+    public void updateBalance(int accountId, int userId, double amount, String type) {
+        Account account = getAccountById(accountId, userId);
         if ("income".equalsIgnoreCase(type)) {
             account.setBalance(account.getBalance() + amount);
         } else if ("expense".equalsIgnoreCase(type)) {
+            if (account.getBalance() < amount) {
+                throw new IllegalArgumentException("Insufficient balance in account");
+            }
             account.setBalance(account.getBalance() - amount);
+        } else {
+            throw new IllegalArgumentException("Invalid transaction type: " + type);
         }
-        accountDAO.saveAccount(account);
+        accountDAO.updateAccount(account);
     }
 }

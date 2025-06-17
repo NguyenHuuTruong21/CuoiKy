@@ -4,7 +4,9 @@ public class Budget {
 	private int id;
     private Category category;
     private double amount;
-    private double spent;
+//    private double spent;
+    private Status status;
+    private int userId;
     
     public Budget() {}
 
@@ -12,7 +14,8 @@ public class Budget {
 		this.id = id;
 		this.category = category;
 		this.amount = amount;
-		this.spent = 0;
+//		this.spent = 0;
+		this.status = Status.ToDo;
 	}
 
 	public int getId() {
@@ -39,12 +42,20 @@ public class Budget {
 		this.amount = amount;
 	}
 
-	public double getSpent() {
-		return spent;
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setSpent(double spent) {
-		this.spent = spent;
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
     
 }

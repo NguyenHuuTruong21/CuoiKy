@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,24 +20,20 @@
         <div class="card shadow-sm">
             <div class="card-body">
                 <form action="${pageContext.request.contextPath}/budget/add" method="post">
-                    <!-- <div class="mb-3">
-                        <label class="form-label">ID</label>
-                        <input type="text" name="id" class="form-control" placeholder="Enter budget ID" required/>
-                    </div> -->
                     <div class="mb-3">
                         <label class="form-label">Category</label>
                         <select name="categoryId" class="form-select" required>
                             <option value="" disabled selected>Select category</option>
-                            <c:forEach var="category" items="${categories}">
-                                <option value="${category.id}">${category.name}</option>
+                            <c:forEach var="cat" items="${categories}">
+                                <option value="${cat.id}">${cat.name}</option>
                             </c:forEach>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Amount</label>
-                        <input type="number" name="amount" step="0.01" class="form-control" placeholder="Enter budget amount" required/>
+                        <input type="number" name="amount" class="form-control" placeholder="Enter amount" required step="0.01">
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Budget</button>
+                    <button type="submit" class="btn btn-primary">Save Budget</button>
                     <a href="${pageContext.request.contextPath}/budgets" class="btn btn-secondary ms-2">Cancel</a>
                 </form>
             </div>

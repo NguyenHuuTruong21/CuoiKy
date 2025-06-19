@@ -44,6 +44,8 @@ CREATE TABLE budget (
     category_id INT,
     amount DOUBLE NOT NULL,
     spent DOUBLE NOT NULL DEFAULT 0,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(user_id),
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
@@ -85,11 +87,11 @@ INSERT INTO `transaction` (user_id, type, amount, date, category_id, description
 (3, 'expense', 150.0, '2025-05-07', 7, 'Online shopping', 2);
 
 
-INSERT INTO budget (category_id, amount, spent) VALUES
-(1, 300.0, 70.0),
-(2, 100.0, 20.0),
-(6, 200.0, 80.0),
-(7, 400.0, 150.0);
+INSERT INTO budget (category_id, amount, spent, user_id) VALUES
+(1, 300.0, 70.0,2),
+(2, 100.0, 20.0, 3),
+(6, 200.0, 80.0, 2),
+(7, 400.0, 150.0, 3);
 
 INSERT INTO reminder (bill_name, amount, due_date, is_paid) VALUES
 ('Electricity Bill', 200.0, '2025-06-01', false),

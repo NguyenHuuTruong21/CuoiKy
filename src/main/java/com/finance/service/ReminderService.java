@@ -26,6 +26,10 @@ public class ReminderService {
         return reminderDAO.saveReminder(reminder);
     }
 	
+	public void updateReminder(Reminder reminder, int userId) {
+	    reminderDAO.updateReminder(reminder); // hoặc truyền userId nếu DAO cần
+	}
+	
 	public Reminder getReminderById(int id, int userid) {
         return reminderDAO.getReminderById(id, userid);
     }
@@ -41,11 +45,13 @@ public class ReminderService {
 //    }
 	
 	public List<Reminder> getPendingReminders(int userId) {
-        LocalDate today = LocalDate.now(); // 2025-06-02
-        return getAllReminders(userId).stream()
-                .filter(r -> !r.isPaid() && !r.getDueDate().isBefore(today))
-                .collect(Collectors.toList());
-    }
+	    LocalDate today = LocalDate.now();
+	    return getAllReminders(userId).stream()
+	        .filter(r -> !r.isPaid())
+	        .filter(r -> !r.isNotified()) 
+	        .filter(r -> !r.getDueDate().isBefore(today))
+	        .collect(Collectors.toList());
+	}
 
 //    public void markAsPaid(int id) {
 //        Reminder reminder = getReminderById(id);
@@ -64,6 +70,30 @@ public class ReminderService {
         reminder.setPaid(true);
         reminderDAO.updateReminder(reminder);
     }
+	
+	public List<Reminder> getAchievedReminders(int userId, double totalBalance) {
+	    List<Reminder> reminders = getAllReminders(userId);
+	    LocalDate today = LocalDate.now();
+	    return reminders.stream()
+	        .filter(r -> !r.isNotified()) // Chưa thông báo
+	        .filter(r -> !r.isPaid())     // Chưa trả
+	        .filter(r -> (r.getDueDate() != null && !today.isBefore(r.getDueDate()))) // Đúng ngày hoặc sau ngày
+	        .filter(r -> totalBalance >= r.getAmount()) // Đủ tiền
+	        .collect(Collectors.toList());
+	}
+
+	
+	
+
+	public void markNotified(int reminderId, int userId) {
+	    Reminder reminder = getReminderById(reminderId, userId);
+	    if (reminder != null) {
+	        reminder.setNotified(true);
+	        updateReminder(reminder, userId); // Update vào DB
+	    }
+	}
+
+
 
 //    public void deleteReminder(int id) {
 //        reminderDAO.deleteReminder(id);

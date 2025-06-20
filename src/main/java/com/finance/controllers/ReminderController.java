@@ -83,7 +83,7 @@ public class ReminderController {
             }
             int userId = user.getUserId();
             LocalDate localDueDate = LocalDate.parse(dueDate);
-            Reminder reminder = new Reminder(0, billName, amount, localDueDate, false, userId);
+            Reminder reminder = new Reminder(0, billName, amount, localDueDate, false, false, userId); 
             reminderService.saveReminder(reminder);
             return "redirect:/reminders";
         } catch (Exception e) {

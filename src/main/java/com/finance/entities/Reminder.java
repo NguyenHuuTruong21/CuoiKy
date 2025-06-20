@@ -8,6 +8,7 @@ public class Reminder {
     private double amount;
     private LocalDate dueDate;
     private boolean isPaid;
+    private boolean isNotified = false;
     private int userId;
     
     public Reminder() {}
@@ -21,12 +22,13 @@ public class Reminder {
 //		this.userId = userId;
 //	}
     
-    public Reminder(int id, String billName, double amount, LocalDate dueDate, boolean isPaid, int userId) {
+    public Reminder(int id, String billName, double amount, LocalDate dueDate, boolean isPaid, boolean isNotified,  int userId) {
         this.id = id;
         this.billName = billName;
         this.amount = amount;
         this.dueDate = dueDate;
         this.isPaid = isPaid;
+        this.isNotified = isNotified;
         this.userId = userId;
     }
 
@@ -68,6 +70,14 @@ public class Reminder {
 
 	public void setPaid(boolean isPaid) {
 		this.isPaid = isPaid;
+	}
+	
+	public boolean isNotified() { 
+		return isNotified; 
+	}
+	
+	public void setNotified(boolean notified) { 
+		this.isNotified = notified; 
 	}
 
 	public int getUserId() {

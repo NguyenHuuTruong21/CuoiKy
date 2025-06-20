@@ -18,6 +18,9 @@ public class BudgetService {
 		this.budgetDAO = budgetDAO;
 	}
 	
+	@Autowired
+	private TransactionService transactionService;
+	
 	public int saveBudget(Budget budget, int userId) {
         if (budget == null || budget.getCategory() == null) {
             throw new IllegalArgumentException("Budget category must not be null");
@@ -72,5 +75,20 @@ public class BudgetService {
             budget.setStatus(Status.ToDo);
         }
         budgetDAO.saveBudget(budget, budget.getUserId());
+    }
+    
+ // Thêm vào cuối file BudgetService.java
+    public double getPercentUsed(int userId, int budgetId) {
+        Budget budget = getBudgetById(budgetId, userId);
+        if (budget == null) return 0.0;
+        double totalExpenses = 0.0;
+        
+        totalExpenses = transactionService.getTotalExpensesByCategory(budget.getCategory().getId(), userId);
+        
+        double percent = 0.0;
+        if (budget.getAmount() > 0) {
+            percent = (totalExpenses / budget.getAmount()) * 100;
+        }
+        return percent;
     }
 }

@@ -26,20 +26,22 @@
                         <thead class="table-dark">
                             <tr>
                                 <th>Category</th>
-                                <th>Amount</th>
-                                <th>Status</th>
+                                <th>Amount</th>                                
+                                <th>Đã dùng (%)</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
+                        
                         <tbody>
                             <c:forEach var="budget" items="${budgets}">
                                 <tr>
                                     <td>${budget.category.name}</td>
                                     <td>${budget.amount}</td>
                                     <td>
-                                        <span class="badge ${budget.status == 'ToDo' ? 'bg-secondary' : budget.status == 'InProgress' ? 'bg-warning' : 'bg-success'}">
-                                            ${budget.status}
-                                        </span>
+                                    	<c:out value="${percentUsedMap[budget.id]}" />%
+            							<c:if test="${percentUsedMap[budget.id] > 100}">
+                							<span style="color:red;">Đã vượt ngân sách!</span>
+            							</c:if>
                                     </td>
                                     <td>
                                         <a href="${pageContext.request.contextPath}/budget/delete?id=${budget.id}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this budget?');">Delete</a>

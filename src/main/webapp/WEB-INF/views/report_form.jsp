@@ -92,6 +92,16 @@
                     </a>
                 </div>
             </div>
+            
+            <!-- Income Chart -->
+			<div class="col-md-12">
+    			<div class="card shadow-sm p-4 text-center">
+        			<h2 class="card-title fw-semibold mb-3"><i class="fas fa-chart-bar"></i> Income Chart</h2>
+        			<a href="${pageContext.request.contextPath}/reports/income-chart" class="btn btn-success text-white px-4">
+            			<i class="fas fa-eye"></i> View Income Chart by Category
+        			</a>
+    			</div>
+			</div>
         </div>
 
         <div class="text-center mt-4">

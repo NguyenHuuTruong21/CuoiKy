@@ -36,9 +36,11 @@ public class CategoryService {
         return categoryDAO.getAllCategories(userId);
     }
 	
-//    public void deleteCategory(int id) {
-//        categoryDAO.deleteCategory(id);
-//    }
+    public List<Category> getAllCategoriesByType(int userId, String type) {
+        return getAllCategories(userId).stream()
+                .filter(c -> type.equalsIgnoreCase(c.getType()))
+                .toList();
+    }
     
     public void deleteCategory(int id, int userId) {
         Category category = getCategoryById(id, userId);

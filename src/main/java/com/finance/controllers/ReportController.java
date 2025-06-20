@@ -78,4 +78,16 @@ public class ReportController {
         model.addAttribute("expenseData", expenseByCategory);
         return "expense_chart";
     }
+    
+    @GetMapping("/reports/income-chart")
+    public String showIncomeChart(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        int userId = user.getUserId();
+        Map<String, Double> incomeByCategory = transactionService.getIncomeByCategory(userId);
+        model.addAttribute("incomeData", incomeByCategory);
+        return "income_chart";
+    }
 }

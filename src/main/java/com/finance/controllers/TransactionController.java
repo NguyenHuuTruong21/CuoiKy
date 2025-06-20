@@ -130,9 +130,6 @@ public class TransactionController {
             Transaction transaction = new Transaction(0, userId, type, amount, date, categoryId, description, accountId);
             transactionService.saveTransaction(transaction, userId);
 
-            // Cập nhật số dư tài khoản
-            accountService.updateBalance(accountId, userId, amount, type);
-
             return "redirect:/transactions";
         } catch (Exception e) {
             model.addAttribute("error", "Error adding transaction: " + e.getMessage());

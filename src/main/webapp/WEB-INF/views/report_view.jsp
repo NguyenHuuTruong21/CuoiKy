@@ -33,12 +33,7 @@
                                 <fmt:formatNumber value="${report.expenses}" type="currency" currencySymbol="$"/>
                             </h4>
                         </div>
-                        <div class="col-md-4">
-                            <p class="mb-1">Net Balance</p>
-                            <h4 class="${report.income - report.expenses >= 0 ? 'text-success' : 'text-danger'}">
-                                <fmt:formatNumber value="${report.income - report.expenses}" type="currency" currencySymbol="$"/>
-                            </h4>
-                        </div>
+                        
                     </div>
                 </div>
             </div>

@@ -76,13 +76,27 @@ public class HomeController {
 
         // Thêm dữ liệu vào model
         model.addAttribute("username", user.getName());
-        model.addAttribute("totalIncome", transactionService.getTotalIncome(userId));
-        model.addAttribute("totalExpenses", transactionService.getTotalExpenses(userId));
-        model.addAttribute("remainingBudget", budgetService.getRemainingBudget(userId));
+        double totalIncome = transactionService.getTotalIncome(userId);
+        double totalExpenses = transactionService.getTotalExpenses(userId);
+        double netTotal = totalIncome - totalExpenses;
+        model.addAttribute("totalIncome", totalIncome);
+        model.addAttribute("totalExpenses", totalExpenses);
+        model.addAttribute("remainingBudget", netTotal);
         model.addAttribute("pendingReminders", pendingReminders);
         model.addAttribute("transactions", filteredTransactions);
         model.addAttribute("budgets", budgets);
         model.addAttribute("accounts", accounts);
+        
+     // -- Reminder mục tiêu đã đạt --
+        double totalBalance = accounts.stream().mapToDouble(Account::getBalance).sum();
+        List<Reminder> achievedReminders = reminderService.getAchievedReminders(userId, totalBalance);
+
+        if (session.getAttribute("shownAchievedReminders") == null) {
+            model.addAttribute("achievedReminders", achievedReminders);
+            session.setAttribute("shownAchievedReminders", true);
+        } else {
+            model.addAttribute("achievedReminders", null);
+        }
 
         return "index";
     }

@@ -211,6 +211,15 @@ public class TransactionService {
                         Collectors.summingDouble(Transaction::getAmount)
                 ));
     }
+    
+    public Map<String, Double> getIncomeByCategory(int userId) {
+        return getAllTransactions(userId).stream()
+            .filter(t -> "income".equalsIgnoreCase(t.getType()))
+            .collect(Collectors.groupingBy(
+                t -> t.getCategory().getName(),
+                Collectors.summingDouble(Transaction::getAmount)
+            ));
+    }
 
     private void updateBudgetStatusAfterTransaction(Transaction transaction, int userId) {
         List<Budget> budgets = budgetService.getAllBudgets(userId);
@@ -228,10 +237,18 @@ public class TransactionService {
             // Nếu trạng thái chuyển sang Done, tạo Reminder
             if (budget.getStatus() == Status.Done && oldStatus != Status.Done) {
                 Reminder reminder = new Reminder(0, "Mục tiêu hoàn thành", budget.getAmount(), 
-                        LocalDate.now(), false, userId);
+                        LocalDate.now(), false, false, userId);
                 reminder.setBillName("Bạn đã tiết kiệm đủ tiền!");
                 reminderService.saveReminder(reminder);
             }
         }
+    }
+    // Tính tổng số tiền đã chi tiêu (expense) cho một danh mục (category) của user
+    public double getTotalExpensesByCategory(int categoryId, int userId) {
+        return getAllTransactions(userId).stream()
+                .filter(t -> t.getCategory().getId() == categoryId)
+                .filter(t -> "expense".equalsIgnoreCase(t.getType()))
+                .mapToDouble(t -> t.getAmount())
+                .sum();
     }
 }

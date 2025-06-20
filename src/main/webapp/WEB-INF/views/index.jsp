@@ -142,14 +142,10 @@
 	    <form action="${pageContext.request.contextPath}/" method="get" class="row g-3">
 	        <div class="col-auto">
 	            <label for="year" class="visually-hidden">Year</label>
-	            <input type="number" name="year" id="year" class="form-control" placeholder="Enter Year (2020-2025)" 
+	            <input type="number" name="year" id="year" class="form-control" placeholder="Year" 
 	                   value="${param.year}" min="2020" max="2090">
 	        </div>
-	        <div class="col-auto">
-	            <label for="month" class="visually-hidden">Month</label>
-	            <input type="number" name="month" id="month" class="form-control" placeholder="Enter Month (1-12)" 
-	                   value="${param.month}" min="1" max="12">
-	        </div>
+	        
 	        <div class="col-auto">
 	            <button type="submit" class="btn btn-primary">Filter</button>
 	        </div>
@@ -224,39 +220,43 @@
                 </div>
             </div>
         </div>
-    </div>   
+    </div>  
+    
+    <!-- Modal Mục tiêu đã đạt -->
+	<c:if test="${not empty achievedReminders}">
+    	<div class="modal fade" id="achievedModal" tabindex="-1" aria-labelledby="achievedModalLabel" aria-hidden="true">
+        	<div class="modal-dialog">
+            	<div class="modal-content">
+                	<div class="modal-header bg-success-subtle">
+                    	<h5 class="modal-title" id="achievedModalLabel">
+                        	<i class="fas fa-trophy"></i> Mục tiêu đã đạt!
+                    	</h5>
+                    	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                	</div>
+                	<div class="modal-body">
+                    	<c:forEach var="reminder" items="${achievedReminders}">
+                        	<div class="alert alert-success shadow-sm fw-semibold mb-2">
+                            	🎯 <b>${reminder.billName}</b>
+                            	– Số tiền: <span class="text-danger">${reminder.amount}</span>
+                            	(Đã đủ vào ngày: <b>${reminder.dueDate}</b>)
+                        	</div>
+                    	</c:forEach>
+                	</div>
+                	<div class="modal-footer">
+                    	<a href="${pageContext.request.contextPath}/reminders" class="btn btn-primary">View All Reminders</a>
+                	</div>
+            	</div>
+        	</div>
+    	</div>
+    	<script>
+        	document.addEventListener('DOMContentLoaded', function () {
+            	var achievedModal = new bootstrap.Modal(document.getElementById('achievedModal'));
+            	achievedModal.show();
+        	});
+    	</script>
+	</c:if>
 
-    <!-- Modal for Reminder Alerts -->
-    <c:if test="${not empty pendingReminders}">
-        <div class="modal fade" id="reminderModal" tabindex="-1" aria-labelledby="reminderModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-warning-subtle">
-                        <h5 class="modal-title" id="reminderModalLabel"><i class="fas fa-exclamation-circle me-2"></i>Pending Bill Reminders</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <c:forEach var="reminder" items="${pendingReminders}">
-                            <div class="alert alert-warning" role="alert">
-                                <strong>${reminder.billName}</strong>: ${reminder.amount} due on ${reminder.dueDate}
-                            </div>
-                        </c:forEach>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="${pageContext.request.contextPath}/reminders" class="btn btn-primary">View All Reminders</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var reminderModal = new bootstrap.Modal(document.getElementById('reminderModal'));
-                reminderModal.show();
-            });
-        </script>
-    </c:if>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -36,14 +36,15 @@ public class ReminderDAO {
 //    }
 	
 	public int saveReminder(Reminder reminder) {
-        String sql = "INSERT INTO reminder (bill_name, amount, due_date, is_paid, user_id) VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO reminder (bill_name, amount, due_date, is_paid, is_notified, user_id) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, reminder.getBillName());
             stmt.setDouble(2, reminder.getAmount());
             stmt.setObject(3, reminder.getDueDate());
             stmt.setBoolean(4, reminder.isPaid());
-            stmt.setInt(5, reminder.getUserId());
+            stmt.setBoolean(5, reminder.isNotified());
+            stmt.setInt(6, reminder.getUserId());
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
@@ -90,6 +91,7 @@ public class ReminderDAO {
                 reminder.setAmount(rs.getDouble("amount"));
                 reminder.setDueDate(rs.getObject("due_date", LocalDate.class));
                 reminder.setPaid(rs.getBoolean("is_paid"));
+                reminder.setNotified(rs.getBoolean("is_notified"));
                 reminder.setUserId(rs.getInt("user_id"));
                 return reminder;
             }
@@ -134,6 +136,7 @@ public class ReminderDAO {
                 reminder.setAmount(rs.getDouble("amount"));
                 reminder.setDueDate(rs.getObject("due_date", LocalDate.class));
                 reminder.setPaid(rs.getBoolean("is_paid"));
+                reminder.setNotified(rs.getBoolean("is_notified"));
                 reminder.setUserId(rs.getInt("user_id"));
                 reminders.add(reminder);
             }
@@ -144,15 +147,16 @@ public class ReminderDAO {
     }
 	
 	public void updateReminder(Reminder reminder) {
-        String sql = "UPDATE reminder SET bill_name = ?, amount = ?, due_date = ?, is_paid = ? WHERE id = ? AND user_id = ?";
+		String sql = "UPDATE reminder SET bill_name = ?, amount = ?, due_date = ?, is_paid = ?, is_notified = ? WHERE id = ? AND user_id = ?";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, reminder.getBillName());
             stmt.setDouble(2, reminder.getAmount());
             stmt.setObject(3, reminder.getDueDate());
             stmt.setBoolean(4, reminder.isPaid());
-            stmt.setInt(5, reminder.getId());
-            stmt.setInt(6, reminder.getUserId());
+            stmt.setBoolean(5, reminder.isNotified());
+            stmt.setInt(6, reminder.getId());
+            stmt.setInt(7, reminder.getUserId());
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
                 throw new RuntimeException("Reminder not found or update failed");

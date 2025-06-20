@@ -1,5 +1,9 @@
 package com.finance.controllers;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,21 +37,17 @@ public class BudgetController {
             return "redirect:/login";
         }
         int userId = user.getUserId();
-        model.addAttribute("budgets", budgetService.getAllBudgets(userId));
+        List<Budget> budgets = budgetService.getAllBudgets(userId);
+        Map<Integer, Double> percentUsedMap = new HashMap<>();
+        for (Budget budget : budgets) {
+            double percent = budgetService.getPercentUsed(userId, budget.getId());
+            percentUsedMap.put(budget.getId(), percent);
+        }
+        model.addAttribute("budgets", budgets);
+        model.addAttribute("percentUsedMap", percentUsedMap);
         return "budget_list";
     }
 
-    @GetMapping("/budget/add")
-    public String showAddForm(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("loggedInUser");
-        if (user == null) {
-            return "redirect:/login";
-        }
-        int userId = user.getUserId();
-        model.addAttribute("categories", categoryService.getAllCategories(userId));
-        model.addAttribute("budget", new Budget());
-        return "budget_form";
-    }
 
     @PostMapping("/budget/add")
     public String addBudget(
@@ -74,7 +74,20 @@ public class BudgetController {
             return "budget_form";
         }
     }
+    
+    @GetMapping("/budget/add")
+    public String showAddBudgetForm(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        int userId = user.getUserId();
+        // Lấy danh sách các category để hiển thị trên form
+        model.addAttribute("categories", categoryService.getAllCategoriesByType(userId, "expense"));
+        return "budget_form"; // Tên file jsp của form thêm ngân sách
+    }
 
+    
     @GetMapping("/budget/delete")
     public String deleteBudget(
             @RequestParam("id") int id,

@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Income Chart - Personal Finance Manager</title>
+    <title>Báo cáo thu nhập</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -34,7 +34,7 @@
 </head>
 <body class="bg-light">
     <div class="container mt-5">
-        <h1 class="display-6 text-center mb-4">💰 Income Chart by Category</h1>
+        <h1 class="display-6 text-center mb-4">💰 Biểu đồ thu nhập</h1>
 
         <div class="card card-custom shadow-sm">
             <div class="card-body">
@@ -46,7 +46,7 @@
 
         <div class="text-center mt-4">
             <a href="${pageContext.request.contextPath}/reports" class="btn btn-secondary btn-back">
-                <i class="fas fa-arrow-left"></i> Back to Reports
+                <i class="fas fa-arrow-left"></i> Quay về
             </a>
         </div>
     </div>
@@ -83,13 +83,7 @@
                             font: { size: 14 },
                             color: '#333'
                         }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Income Distribution by Category',
-                        font: { size: 20 },
-                        color: '#212529'
-                    }
+                    },            
                 }
             }
         });

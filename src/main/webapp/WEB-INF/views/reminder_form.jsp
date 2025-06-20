@@ -6,12 +6,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Reminder - Personal Finance Manager</title>
+    <title>Thêm tích luỹ</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
     <div class="container mt-5">
-        <h1 class="display-6 fw-bold mb-4">Add Reminder</h1>
+        <h1 class="display-6 fw-bold mb-4">Thêm tích luỹ</h1>
         <c:if test="${not empty error}">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 ${error}
@@ -22,19 +22,19 @@
             <div class="card-body">
                 <form action="${pageContext.request.contextPath}/reminder/add" method="post">
                     <div class="mb-3">
-                        <label class="form-label">Bill Name</label>
-                        <input type="text" name="billName" class="form-control" placeholder="Enter bill name" required/>
+                        <label class="form-label">Tên hoá đơn</label>
+                        <input type="text" name="billName" class="form-control" required/>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Amount</label>
-                        <input type="number" name="amount" step="0.01" class="form-control" placeholder="Enter amount" required/>
+                        <label class="form-label">Số tiền cần tích luỹ</label>
+                        <input type="number" name="amount" step="0.01" class="form-control" required/>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Due Date</label>
+                        <label class="form-label">Ngày hẹn</label>
                         <input type="date" name="dueDate" class="form-control" required/>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Reminder</button>
-                    <a href="${pageContext.request.contextPath}/reminders" class="btn btn-secondary ms-2">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                    <a href="${pageContext.request.contextPath}/reminders" class="btn btn-secondary ms-2">Huỷ</a>
                 </form>
             </div>
         </div>

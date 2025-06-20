@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Account - Personal Finance Manager</title>
+    <title>Thêm tài khoản</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -36,7 +36,7 @@
 <body>
     <div class="container py-5">
         <div class="form-container">
-            <h1 class="text-center display-6 fw-bold mb-4">🧾 Add New Account</h1>
+            <h1 class="text-center display-6 fw-bold mb-4">🧾 Thêm tài khoảnt</h1>
 
             <c:if test="${not empty error}">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -49,16 +49,16 @@
                 <div class="card-body">
                     <form action="${pageContext.request.contextPath}/account/add" method="post">
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Account Name</label>
-                            <input type="text" name="name" class="form-control form-control-lg" placeholder="Enter account name" required />
+                            <label class="form-label fw-semibold">Tên tài khoản</label>
+                            <input type="text" name="name" class="form-control form-control-lg" placeholder="Tên" required />
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Initial Balance</label>
-                            <input type="number" name="balance" step="0.01" class="form-control form-control-lg" placeholder="Enter initial balance" required />
+                            <label class="form-label fw-semibold">Số dư</label>
+                            <input type="number" name="balance" step="0.01" class="form-control form-control-lg" placeholder="Số dư tài khoản" required />
                         </div>
                         <div class="d-flex justify-content-between mt-4">
-                            <button type="submit" class="btn btn-primary px-4">Add Account</button>
-                            <a href="${pageContext.request.contextPath}/accounts" class="btn btn-secondary px-4">Cancel</a>
+                            <button type="submit" class="btn btn-primary px-4">Thêm</button>
+                            <a href="${pageContext.request.contextPath}/accounts" class="btn btn-secondary px-4">Huỷ</a>
                         </div>
                     </form>
                 </div>

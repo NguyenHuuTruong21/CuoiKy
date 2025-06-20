@@ -47,11 +47,10 @@ public class ReminderService {
 	public List<Reminder> getPendingReminders(int userId) {
 	    LocalDate today = LocalDate.now();
 	    return getAllReminders(userId).stream()
-	        .filter(r -> !r.isPaid())
-	        .filter(r -> !r.isNotified()) 
-	        .filter(r -> !r.getDueDate().isBefore(today))
+	        .filter(r -> !r.isPaid() && !r.getDueDate().isBefore(today))
 	        .collect(Collectors.toList());
 	}
+
 
 //    public void markAsPaid(int id) {
 //        Reminder reminder = getReminderById(id);

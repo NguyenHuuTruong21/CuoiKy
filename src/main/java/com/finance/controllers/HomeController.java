@@ -90,13 +90,11 @@ public class HomeController {
      // -- Reminder mục tiêu đã đạt --
         double totalBalance = accounts.stream().mapToDouble(Account::getBalance).sum();
         List<Reminder> achievedReminders = reminderService.getAchievedReminders(userId, totalBalance);
+        model.addAttribute("achievedReminders", achievedReminders);
 
-        if (session.getAttribute("shownAchievedReminders") == null) {
-            model.addAttribute("achievedReminders", achievedReminders);
-            session.setAttribute("shownAchievedReminders", true);
-        } else {
-            model.addAttribute("achievedReminders", null);
-        }
+     for (Reminder r : achievedReminders) {
+         reminderService.markNotified(r.getId(), userId);
+     }
 
         return "index";
     }

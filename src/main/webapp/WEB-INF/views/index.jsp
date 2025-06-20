@@ -73,11 +73,11 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="${pageContext.request.contextPath}/index"><i class="fas fa-wallet me-2"></i>Finance Manager</a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/"><i class="fas fa-wallet me-2"></i>Quản lý chi tiêu</a>
         <div class="ms-auto d-flex align-items-center">
-            <span class="me-3 text-muted">Hello, ${username}!</span>
+            <span class="me-3 text-muted">Xin chào, ${username}!</span>
             <a href="${pageContext.request.contextPath}/logout" class="btn btn-danger btn-sm">
-                <i class="fas fa-sign-out-alt"></i> Logout
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
             </a>
         </div>
     </div>
@@ -88,22 +88,22 @@
     <div class="bg-white p-3 rounded shadow-sm mb-4 overflow-auto" style="white-space: nowrap;">
         <div class="d-inline-flex gap-2">
             <a href="${pageContext.request.contextPath}/transaction/add" class="btn btn-outline-success">
-                <i class="fas fa-plus-circle"></i> Add Transaction
+                <i class="fas fa-plus-circle"></i>Thêm ghi chép
             </a>
             <a href="${pageContext.request.contextPath}/categories" class="btn btn-outline-warning">
-                <i class="fas fa-tags"></i> Categories
+                <i class="fas fa-tags"></i>Danh mục
             </a>
             <a href="${pageContext.request.contextPath}/budgets" class="btn btn-outline-info">
-                <i class="fas fa-chart-pie"></i> Budgets
+                <i class="fas fa-chart-pie"></i>Ngân sách
             </a>
             <a href="${pageContext.request.contextPath}/accounts" class="btn btn-outline-secondary">
-                <i class="fas fa-university"></i> Accounts
+                <i class="fas fa-university"></i>Tài khoản
             </a>
             <a href="${pageContext.request.contextPath}/reports" class="btn btn-outline-dark">
-                <i class="fas fa-chart-line"></i> Reports
+                <i class="fas fa-chart-line"></i>Báo cáo
             </a>
             <a href="${pageContext.request.contextPath}/reminders" class="btn btn-outline-danger">
-                <i class="fas fa-bell"></i> Reminders
+                <i class="fas fa-bell"></i>Tích luỹ
             </a>
         </div>
     </div>
@@ -136,37 +136,54 @@
         </form>
     </div> --%>
     
-    <!-- Filter Form for Transactions -->
-	<div class="filter-form">
-	    <h5>Filter Transactions</h5>
-	    <form action="${pageContext.request.contextPath}/" method="get" class="row g-3">
-	        <div class="col-auto">
-	            <label for="year" class="visually-hidden">Year</label>
-	            <input type="number" name="year" id="year" class="form-control" placeholder="Year" 
-	                   value="${param.year}" min="2020" max="2090">
-	        </div>
-	        
-	        <div class="col-auto">
-	            <button type="submit" class="btn btn-primary">Filter</button>
-	        </div>
-	    </form>
-	</div>
+    <%
+    int currentYear = java.time.Year.now().getValue();
+    int minYear = 1970;
+    int maxYear = 3000;
+    String selectedYear = request.getParameter("year");
+	%>
+    <div class="filter-form">
+    <form action="${pageContext.request.contextPath}/" method="get" class="row g-3">
+        <div class="col-auto">
+            <label for="year" class="visually-hidden">Year</label>
+            <select name="year" id="year" class="form-select" style="min-width: 130px;">
+                <option value="">All Years</option>
+                <%
+                    for (int y = minYear; y <= maxYear; y++) {
+                        boolean isSelected = false;
+                        if (selectedYear != null && !selectedYear.isEmpty()) {
+                            isSelected = Integer.parseInt(selectedYear) == y;
+                        } else {
+                            isSelected = y == currentYear;
+                        }
+                %>
+                    <option value="<%=y%>" <%=isSelected ? "selected" : ""%>><%=y%></option>
+                <%
+                    }
+                %>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Lọc</button>
+        </div>
+    </form>
+</div>
 
     <!-- Transaction List -->
     <div class="section-card">
-        <h4><i class="fas fa-list"></i> Recent Transactions</h4>
+        <h4><i class="fas fa-list"></i> Ghi chép gần đây</h4>
         <c:if test="${not empty transactions and not empty transactions}">
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover">
                     <thead class="table-dark">
                         <tr>
-                            <th>Type</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>Category</th>
-                            <th>Account</th>
-                            <th>Description</th>
-                            <th>Actions</th>
+                            <th>Loại</th>
+                            <th>Số tiền</th>
+                            <th>Ngày nhập</th>
+                            <th>Danh mục</th>
+                            <th>Tài khoản</th>
+                            <th>Ghi chú</th>
+                            <th>Tuỳ chọn</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -174,8 +191,11 @@
                             <tr>
                                 <td>
                                     <span class="badge ${transaction.type == 'income' ? 'bg-success' : 'bg-danger'}">
-                                        ${transaction.type}
-                                    </span>
+    									<c:choose>
+        									<c:when test="${transaction.type == 'income'}">Thu nhập</c:when>
+        									<c:otherwise>Chi tiêu</c:otherwise>
+    									</c:choose>
+									</span>
                                 </td>
                                 <td>${transaction.amount}</td>
                                 <td>${transaction.date}</td>
@@ -183,7 +203,7 @@
                                 <td>${transaction.account.name}</td>
                                 <td>${transaction.description}</td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/transaction/delete?id=${transaction.id}" class="btn btn-sm btn-danger ms-2" onclick="return confirm('Are you sure you want to delete this transaction?');">Delete</a>
+                                    <a href="${pageContext.request.contextPath}/transaction/delete?id=${transaction.id}" class="btn btn-sm btn-danger ms-2" onclick="return confirm('Bạn chắc chắn xoá ghi chép này ?');">Xoá</a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -193,29 +213,28 @@
         </c:if>
         <c:if test="${empty transactions}">
             <div class="alert alert-warning" role="alert">
-                No transactions found.
+                Không tìm thấy ghi chép
             </div>
         </c:if>
     </div>
 
 	<!-- Quick Overview -->
     <div class="card card-overview shadow-sm mb-4">
-        <div class="card-body">
-            <h4 class="card-title mb-4"><i class="fas fa-chart-bar"></i> Quick Overview</h4>
+        <div class="card-body">     
             <div class="row text-center">
                 <div class="col-md-4 mb-3">
                     <div class="overview-icon"><i class="fas fa-arrow-down"></i></div>
-                    <p>Total Income</p>
+                    <p>Thu nhập</p>
                     <h5 class="text-success">${totalIncome}</h5>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="overview-icon"><i class="fas fa-arrow-up"></i></div>
-                    <p>Total Expenses</p>
+                    <p>Chi tiêu</p>
                     <h5 class="text-danger">${totalExpenses}</h5>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="overview-icon"><i class="fas fa-wallet"></i></div>
-                    <p>Total Budget Goals</p>
+                    <p>Còn thừa</p>
                     <h5 class="${remainingBudget >= 0 ? 'text-success' : 'text-danger'}">${remainingBudget}</h5>
                 </div>
             </div>

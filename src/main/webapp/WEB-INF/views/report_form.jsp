@@ -26,39 +26,39 @@
 </head>
 <body>
     <div class="container py-5">
-        <h1 class="display-5 fw-bold text-center mb-5 text-primary">📊 Generate Financial Reports</h1>
+        <h1 class="display-5 fw-bold text-center mb-5 text-primary">📊 Báo cáo</h1>
 
         <div class="row g-4">
             <!-- Monthly Report -->
             <div class="col-md-6">
                 <div class="card shadow-sm p-3 h-100">
                     <div class="card-body">
-                        <h2 class="card-title fw-semibold mb-4"><i class="fas fa-calendar-alt"></i> Monthly Report</h2>
+                        <h2 class="card-title fw-semibold mb-4"><i class="fas fa-calendar-alt"></i>Báo cáo theo từng tháng</h2>
                         <form action="${pageContext.request.contextPath}/reports/monthly" method="post">
                             <div class="mb-3">
-                                <label class="form-label">Year</label>
+                                <label class="form-label">Năm</label>
                                 <input type="number" name="year" class="form-control" value="2025" placeholder="Enter year (e.g., 2025)" required/>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Month</label>
+                                <label class="form-label">Tháng</label>
                                 <select name="month" class="form-select" required>
-                                    <option value="" disabled>Select month</option>
-                                    <option value="1">January</option>
-                                    <option value="2">February</option>
-                                    <option value="3">March</option>
-                                    <option value="4">April</option>
-                                    <option value="5">May</option>
-                                    <option value="6" selected>June</option>
-                                    <option value="7">July</option>
-                                    <option value="8">August</option>
-                                    <option value="9">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
+                                    <option value="" disabled>Chọn tháng</option>
+                                    <option value="1">Tháng 1</option>
+                                    <option value="2">Tháng 2</option>
+                                    <option value="3">Tháng 3</option>
+                                    <option value="4">Tháng 4</option>
+                                    <option value="5">Tháng 5</option>
+                                    <option value="6">Tháng 6</option>
+                                    <option value="7">Tháng 7</option>
+                                    <option value="8">Tháng 8</option>
+                                    <option value="9">Tháng 9</option>
+                                    <option value="10">Tháng 10</option>
+                                    <option value="11">Tháng 11</option>
+                                    <option value="12">Tháng 12</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary w-100 mt-2">
-                                <i class="fas fa-file-alt"></i> Generate Monthly Report
+                                <i class="fas fa-file-alt"></i>Lọc
                             </button>
                         </form>
                     </div>
@@ -69,14 +69,14 @@
             <div class="col-md-6">
                 <div class="card shadow-sm p-3 h-100">
                     <div class="card-body">
-                        <h2 class="card-title fw-semibold mb-4"><i class="fas fa-calendar"></i> Yearly Report</h2>
+                        <h2 class="card-title fw-semibold mb-4"><i class="fas fa-calendar"></i>Báo cáo theo năm</h2>
                         <form action="${pageContext.request.contextPath}/reports/yearly" method="post">
                             <div class="mb-3">
-                                <label class="form-label">Year</label>
+                                <label class="form-label">Năm</label>
                                 <input type="number" name="year" class="form-control" value="2025" placeholder="Enter year (e.g., 2025)" required/>
                             </div>
                             <button type="submit" class="btn btn-success w-100 mt-2">
-                                <i class="fas fa-file-alt"></i> Generate Yearly Report
+                                <i class="fas fa-file-alt"></i>Lọc
                             </button>
                         </form>
                     </div>
@@ -86,9 +86,9 @@
             <!-- Expense Chart -->
             <div class="col-md-12">
                 <div class="card shadow-sm p-4 text-center">
-                    <h2 class="card-title fw-semibold mb-3"><i class="fas fa-chart-pie"></i> Expense Chart</h2>
+                    <h2 class="card-title fw-semibold mb-3"><i class="fas fa-chart-pie"></i>Chi tiêu</h2>
                     <a href="${pageContext.request.contextPath}/reports/expense-chart" class="btn btn-info text-white px-4">
-                        <i class="fas fa-eye"></i> View Expense Chart by Category
+                        <i class="fas fa-eye"></i>Xem biểu đồ chi tiêu
                     </a>
                 </div>
             </div>
@@ -96,9 +96,9 @@
             <!-- Income Chart -->
 			<div class="col-md-12">
     			<div class="card shadow-sm p-4 text-center">
-        			<h2 class="card-title fw-semibold mb-3"><i class="fas fa-chart-bar"></i> Income Chart</h2>
+        			<h2 class="card-title fw-semibold mb-3"><i class="fas fa-chart-bar"></i>Thu nhập</h2>
         			<a href="${pageContext.request.contextPath}/reports/income-chart" class="btn btn-success text-white px-4">
-            			<i class="fas fa-eye"></i> View Income Chart by Category
+            			<i class="fas fa-eye"></i>Xem biểu đồ thu nhập
         			</a>
     			</div>
 			</div>
@@ -106,7 +106,7 @@
 
         <div class="text-center mt-4">
             <a href="${pageContext.request.contextPath}/" class="btn btn-secondary">
-                <i class="fas fa-home"></i> Back to Home
+                <i class="fas fa-home"></i> Quay về trang chủ
             </a>
         </div>
     </div>

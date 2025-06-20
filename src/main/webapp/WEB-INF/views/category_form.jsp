@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Category - Personal Finance Manager</title>
+    <title>Thêm danh mục</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -26,8 +26,7 @@
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
         <div class="col-md-6">
             <div class="text-center mb-4">
-                <h1 class="display-6 fw-bold text-primary"><i class="bi bi-folder-plus"></i> Add Category</h1>
-                <p class="text-muted">Organize your finances with categories</p>
+                <h1 class="display-6 fw-bold text-primary"><i class="bi bi-folder-plus"></i>Thêm danh mục</h1>
             </div>
 
             <c:if test="${not empty error}">
@@ -41,20 +40,20 @@
                 <div class="card-body">
                     <form action="${pageContext.request.contextPath}/category/add" method="post">
                         <div class="mb-3">
-                            <label class="form-label">Category Name</label>
-                            <input type="text" name="name" class="form-control" placeholder="e.g. Salary, Rent, Food" required/>
+                            <label class="form-label">Tên danh mục</label>
+                            <input type="text" name="name" class="form-control" required/>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Category Type</label>
+                            <label class="form-label">Loại</label>
                             <select name="type" class="form-select" required>
-                                <option value="" disabled selected>Select type</option>
-                                <option value="income">Income</option>
-                                <option value="expense">Expense</option>
+                                <option value="" disabled selected>Chọn</option>
+                                <option value="income">Thu nhập</option>
+                                <option value="expense">Chi tiêu</option>
                             </select>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <a href="${pageContext.request.contextPath}/categories" class="btn btn-outline-secondary">Back</a>
-                            <button type="submit" class="btn btn-success">Add Category</button>
+                            <a href="${pageContext.request.contextPath}/categories" class="btn btn-outline-secondary">Huỷ</a>
+                            <button type="submit" class="btn btn-success">Thêm</button>
                         </div>
                     </form>
                 </div>

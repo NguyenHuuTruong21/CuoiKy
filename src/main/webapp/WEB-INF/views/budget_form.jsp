@@ -5,12 +5,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Budget - Personal Finance Manager</title>
+    <title>Thêm ngân sách</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
     <div class="container mt-5">
-        <h1 class="display-6 fw-bold mb-4">Add Budget</h1>
+        <h1 class="display-6 fw-bold mb-4">Thêm ngân sách mới</h1>
         <c:if test="${not empty error}">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 ${error}
@@ -21,20 +21,20 @@
             <div class="card-body">
                 <form action="${pageContext.request.contextPath}/budget/add" method="post">
                     <div class="mb-3">
-                        <label class="form-label">Category</label>
+                        <label class="form-label">Danh mục</label>
                         <select name="categoryId" class="form-select" required>
-                            <option value="" disabled selected>Select category</option>
+                            <option value="" disabled selected>Chọn danh mục cần chi tiêu để đặt ngân sách</option>
                             <c:forEach var="cat" items="${categories}">
                                 <option value="${cat.id}">${cat.name}</option>
                             </c:forEach>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Amount</label>
-                        <input type="number" name="amount" class="form-control" placeholder="Enter amount" required step="0.01">
+                        <label class="form-label">Số tiền</label>
+                        <input type="number" name="amount" class="form-control"	 required step="0.01">
                     </div>
-                    <button type="submit" class="btn btn-primary">Save Budget</button>
-                    <a href="${pageContext.request.contextPath}/budgets" class="btn btn-secondary ms-2">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                    <a href="${pageContext.request.contextPath}/budgets" class="btn btn-secondary ms-2">Huỷ</a>
                 </form>
             </div>
         </div>

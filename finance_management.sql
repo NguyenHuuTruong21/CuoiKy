@@ -45,16 +45,20 @@ CREATE TABLE budget (
     amount DOUBLE NOT NULL,
     spent DOUBLE NOT NULL DEFAULT 0,
     user_id INT NOT NULL,
+    status VARCHAR(50),
     FOREIGN KEY (user_id) REFERENCES user(user_id),
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
 CREATE TABLE reminder (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
     bill_name VARCHAR(100) NOT NULL,
     amount DOUBLE NOT NULL,
     due_date DATE NOT NULL,
-    is_paid BOOLEAN NOT NULL
+    is_paid BOOLEAN NOT NULL,
+    is_notified BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
 
 INSERT INTO `user` (name, username, password, role) VALUES
@@ -87,14 +91,14 @@ INSERT INTO `transaction` (user_id, type, amount, date, category_id, description
 (3, 'expense', 150.0, '2025-05-07', 7, 'Online shopping', 2);
 
 
-INSERT INTO budget (category_id, amount, spent, user_id) VALUES
-(1, 300.0, 70.0,2),
-(2, 100.0, 20.0, 3),
-(6, 200.0, 80.0, 2),
-(7, 400.0, 150.0, 3);
+INSERT INTO budget (category_id, amount, spent, user_id, status) VALUES
+(1, 300.0, 70.0,2, 5000),
+(2, 100.0, 20.0, 3, 4000),
+(6, 200.0, 80.0, 2, 3000),
+(7, 400.0, 150.0, 3, 2000);
 
-INSERT INTO reminder (bill_name, amount, due_date, is_paid) VALUES
-('Electricity Bill', 200.0, '2025-06-01', false),
-('Water Bill', 100.0, '2025-06-05', true),
-('Internet Bill', 150.0, '2025-06-10', false),
-('Netflix Subscription', 200.0, '2025-06-15', true);
+INSERT INTO reminder (user_id, bill_name, amount, due_date, is_paid) VALUES
+(2, 'Electricity Bill', 200.0, '2025-06-01', false),
+(3, 'Water Bill', 100.0, '2025-06-05', true),
+(2, 'Internet Bill', 150.0, '2025-06-10', false),
+(3, 'Netflix Subscription', 200.0, '2025-06-15', true);

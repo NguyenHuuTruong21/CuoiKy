@@ -101,4 +101,8 @@ INSERT INTO reminder (user_id, bill_name, amount, due_date, is_paid) VALUES
 (2, 'Electricity Bill', 200.0, '2025-06-01', false),
 (3, 'Water Bill', 100.0, '2025-06-05', true),
 (2, 'Internet Bill', 150.0, '2025-06-10', false),
+<<<<<<< HEAD
 (3, 'Netflix Subscription', 200.0, '2025-06-15', true);
+=======
+(3, 'Netflix Subscription', 200.0, '2025-06-15', true);
+>>>>>>> c63f22338caace770f0d0f672001a6dbc40ff4e7

@@ -76,8 +76,8 @@ public class HomeController {
 
         // Thêm dữ liệu vào model
         model.addAttribute("username", user.getName());
-        double totalIncome = transactionService.getTotalIncome(userId);
-        double totalExpenses = transactionService.getTotalExpenses(userId);
+        double totalIncome = transactionService.getTotalIncome(userId, year, month);
+        double totalExpenses = transactionService.getTotalExpenses(userId, year, month);
         double netTotal = totalIncome - totalExpenses;
         model.addAttribute("totalIncome", totalIncome);
         model.addAttribute("totalExpenses", totalExpenses);

@@ -158,6 +158,28 @@ public class TransactionService {
                 .mapToDouble(Transaction::getAmount)
                 .sum();
     }
+    
+    //lọc theo tháng/năm
+    public double getTotalIncome(int userId, Integer year, Integer month) {
+        return getAllTransactions(userId).stream()
+            .filter(t -> "income".equalsIgnoreCase(t.getType()))
+            .filter(t -> (year == null || t.getDate().getYear() == year))
+            .filter(t -> (month == null || t.getDate().getMonthValue() == month))
+            .mapToDouble(Transaction::getAmount)
+            .sum();
+    }
+
+    //lọc theo tháng/năm
+    public double getTotalExpenses(int userId, Integer year, Integer month) {
+        return getAllTransactions(userId).stream()
+            .filter(t -> "expense".equalsIgnoreCase(t.getType()))
+            .filter(t -> (year == null || t.getDate().getYear() == year))
+            .filter(t -> (month == null || t.getDate().getMonthValue() == month))
+            .mapToDouble(Transaction::getAmount)
+            .sum();
+    }
+
+
 
     public double getRemainingBudget(int userId) {
         return budgetService.getRemainingBudget(userId);

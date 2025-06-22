@@ -141,32 +141,54 @@
     int minYear = 1970;
     int maxYear = 3000;
     String selectedYear = request.getParameter("year");
+    String selectedMonth = request.getParameter("month");
 	%>
-    <div class="filter-form">
-    <form action="${pageContext.request.contextPath}/" method="get" class="row g-3">
-        <div class="col-auto">
-            <label for="year" class="visually-hidden">Year</label>
-            <select name="year" id="year" class="form-select" style="min-width: 130px;">
-                <option value="">All Years</option>
-                <%
-                    for (int y = minYear; y <= maxYear; y++) {
-                        boolean isSelected = false;
-                        if (selectedYear != null && !selectedYear.isEmpty()) {
-                            isSelected = Integer.parseInt(selectedYear) == y;
-                        } else {
-                            isSelected = y == currentYear;
-                        }
-                %>
-                    <option value="<%=y%>" <%=isSelected ? "selected" : ""%>><%=y%></option>
-                <%
+<div class="filter-form">
+<form action="${pageContext.request.contextPath}/" method="get" class="row g-3">
+	<div class="col-auto">
+        <label for="month" class="visually-hidden">Month</label>
+        <select name="month" id="month" class="form-select" style="min-width: 110px;">
+            <option value="">All Months</option>
+            <%
+                for (int m = 1; m <= 12; m++) {
+                    boolean isSelected = false;
+                    if (selectedMonth != null && !selectedMonth.isEmpty()) {
+                        isSelected = Integer.parseInt(selectedMonth) == m;
+                    } else {
+                        // Nếu không chọn thì ưu tiên tháng hiện tại
+                        isSelected = m == java.time.LocalDate.now().getMonthValue();
                     }
-                %>
-            </select>
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary">Lọc</button>
-        </div>
-    </form>
+            %>
+                <option value="<%=m%>" <%=isSelected ? "selected" : ""%>><%=m%></option>
+            <%
+                }
+            %>
+        </select>
+    </div>
+    
+    <div class="col-auto">
+        <label for="year" class="visually-hidden">Year</label>
+        <select name="year" id="year" class="form-select" style="min-width: 130px;">
+            <option value="">All Years</option>
+            <%
+                for (int y = minYear; y <= maxYear; y++) {
+                    boolean isSelected = false;
+                    if (selectedYear != null && !selectedYear.isEmpty()) {
+                        isSelected = Integer.parseInt(selectedYear) == y;
+                    } else {
+                        isSelected = y == currentYear;
+                    }
+            %>
+                <option value="<%=y%>" <%=isSelected ? "selected" : ""%>><%=y%></option>
+            <%
+                }
+            %>
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Lọc</button>
+    </div>
+</form>
 </div>
 
     <!-- Transaction List -->
@@ -182,7 +204,7 @@
                             <th>Ngày nhập</th>
                             <th>Danh mục</th>
                             <th>Tài khoản</th>
-                            <th>Ghi chú</th>
+                            <th>Nội dung</th>
                             <th>Tuỳ chọn</th>
                         </tr>
                     </thead>
@@ -203,7 +225,8 @@
                                 <td>${transaction.account.name}</td>
                                 <td>${transaction.description}</td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/transaction/delete?id=${transaction.id}" class="btn btn-sm btn-danger ms-2" onclick="return confirm('Bạn chắc chắn xoá ghi chép này ?');">Xoá</a>
+                                	<a href="${pageContext.request.contextPath}/transaction/edit?id=${transaction.id}" class="btn btn-sm btn-warning ms-2">Sửa</a>
+                                    <a href="${pageContext.request.contextPath}/transaction/delete?id=${transaction.id}" class="btn btn-sm btn-danger ms-2" onclick="return confirm('Bạn chắc chắn xoá ghi chép này ?');">Xoá</a>   	
                                 </td>
                             </tr>
                         </c:forEach>

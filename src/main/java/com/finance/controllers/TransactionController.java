@@ -1,6 +1,7 @@
 package com.finance.controllers;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.finance.entities.Account;
+import com.finance.entities.Category;
 import com.finance.entities.Transaction;
 import com.finance.entities.User;
 import com.finance.service.AccountService;
@@ -130,35 +133,30 @@ public class TransactionController {
             Transaction transaction = new Transaction(0, userId, type, amount, date, categoryId, description, accountId);
             transactionService.saveTransaction(transaction, userId);
 
-            return "redirect:/transactions";
+            return "redirect:/";
         } catch (Exception e) {
             model.addAttribute("error", "Error adding transaction: " + e.getMessage());
             model.addAttribute("categories", categoryService.getAllCategories(userId));
             model.addAttribute("accounts", accountService.getAllAccounts(userId));
+            model.addAttribute("mode", "add");
             return "transaction_form";
         }
     }
 
-    @GetMapping("/transaction/edit")
-    public String showEditForm(
-            @RequestParam("id") int id,
-            Model model,
-            HttpSession session) {
-        User user = (User) session.getAttribute("loggedInUser");
-        if (user == null) {
-            return "redirect:/login";
-        }
-        int userId = user.getUserId();
-        Transaction transaction = transactionService.getTransactionById(userId, id);
-        if (transaction == null) {
-            model.addAttribute("error", "Transaction not found");
-            return "redirect:/transactions";
-        }
-        model.addAttribute("categories", categoryService.getAllCategories(userId));
-        model.addAttribute("accounts", accountService.getAllAccounts(userId));
-        model.addAttribute("transaction", transaction);
-        return "transaction_form";
-    }
+	@GetMapping("/transaction/edit")
+	public String showEditForm(@RequestParam("id") int id, Model model, HttpSession session) {
+	    User user = (User) session.getAttribute("loggedInUser");
+	    if (user == null) return "redirect:/login";
+	    Transaction transaction = transactionService.getTransactionById(user.getUserId(), id);
+	    model.addAttribute("transaction", transaction);
+	    // Nếu có account/category dạng select cần truyền vào model
+	    List<Account> accounts = accountService.getAllAccounts(user.getUserId());
+	    List<Category> categories = categoryService.getAllCategories(user.getUserId());
+	    model.addAttribute("accounts", accounts);
+	    model.addAttribute("categories", categories);
+	    model.addAttribute("mode", "edit");
+	    return "transaction_form"; // Tạo file JSP này ở bước sau
+	}
 
 //    @PostMapping("/transaction/update")
 //    public String updateTransaction(
@@ -238,7 +236,7 @@ public class TransactionController {
             // Tạo một Transaction mới với dữ liệu từ form
             Transaction updatedTransaction = new Transaction(id, userId, type, amount, date, categoryId, description, accountId);
             transactionService.updateTransaction(userId, id, type, amount, localDate, categoryId, description, accountId);
-            return "redirect:/transactions"; // Quay lại danh sách sau khi cập nhật thành công
+            return "redirect:/"; //
         } catch (Exception e) {
             // Nếu có lỗi, sử dụng dữ liệu từ form để hiển thị lại
             model.addAttribute("error", e.getMessage());
@@ -247,7 +245,7 @@ public class TransactionController {
             model.addAttribute("categories", categoryService.getAllCategories(currentUserId));
             model.addAttribute("accounts", accountService.getAllAccounts(currentUserId));
             model.addAttribute("transaction", new Transaction(id, currentUserId, type, amount, date, categoryId, description, accountId)); // Sử dụng dữ liệu mới từ form
-            return "transaction_form";
+            return "/";
         }
     }
 
@@ -266,7 +264,7 @@ public class TransactionController {
             return "redirect:/transactions";
         } catch (Exception e) {
             model.addAttribute("error", "Error deleting transaction: " + e.getMessage());
-            return "redirect:/transactions";
+            return "redirect:/";
         }
     }
 

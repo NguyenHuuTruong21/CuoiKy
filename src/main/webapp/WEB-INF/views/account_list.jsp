@@ -54,7 +54,7 @@
                                     <td class="text-center">
                                         <a href="${pageContext.request.contextPath}/account/delete?id=${account.id}" 
                                            class="btn btn-sm btn-outline-danger" 
-                                           onclick="return confirm('Are you sure you want to delete this account?');">
+                                           onclick="return confirm('Bạn chắc chắn muốn xoá tài khoản này ?');">
                                             <i class="fas fa-trash-alt me-1"></i>Xoá
                                         </a>
                                     </td>

@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <small class="text-muted">Quản lý tài chính cá nhân</small>
+                    <small class="text-muted">Quản lý tài chính cá nhânve </small>
                 </div>
             </div>
         </div>

@@ -42,6 +42,15 @@ public class CategoryService {
                 .toList();
     }
     
+    public void updateCategory(int id, int userId, String name, String type) {
+        var category = categoryDAO.getCategoryById(id, userId);
+        if (category == null) throw new IllegalArgumentException("Không tìm thấy danh mục");
+        category.setName(name);
+        category.setType(type);
+        categoryDAO.updateCategory(category); // DAO cần hàm này
+    }
+
+    
     public void deleteCategory(int id, int userId) {
         Category category = getCategoryById(id, userId);
         if (category == null) {

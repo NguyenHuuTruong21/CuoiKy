@@ -106,7 +106,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/reminder/delete?id=${reminder.id}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this reminder?');">
+                                        <a href="${pageContext.request.contextPath}/reminder/delete?id=${reminder.id}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn chắc chắn muốn xoá tích luỹ này ?');">
                                             <i class="fas fa-trash-alt"></i> Xoá
                                         </a>
                                     </td>

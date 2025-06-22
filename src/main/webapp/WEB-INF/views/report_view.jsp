@@ -11,7 +11,7 @@
 </head>
 <body class="bg-light">
     <div class="container mt-5">
-        <h1 class="display-6 fw-bold mb-4">Báo cáo của ${period}</h1>
+        <h1 class="display-6 fw-bold mb-4">Báo cáo chi tiết của ${period}</h1>
         <c:if test="${empty report or (report.income == 0 and report.expenses == 0)}">
             <div class="alert alert-warning" role="alert">
                 Không thấy ghi chép cho tháng này

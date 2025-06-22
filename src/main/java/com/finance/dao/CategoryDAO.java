@@ -128,6 +128,21 @@ public class CategoryDAO {
 //        }
 //    }
     
+    public void updateCategory(Category category) {
+        String sql = "UPDATE category SET name=?, type=? WHERE id=? AND user_id=?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, category.getName());
+            stmt.setString(2, category.getType());
+            stmt.setInt(3, category.getId());
+            stmt.setInt(4, category.getUserId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi cập nhật danh mục: " + e.getMessage(), e);
+        }
+    }
+
+    
     public void deleteCategory(int id, int userId) {
         String sql = "DELETE FROM category WHERE id = ? AND user_id = ?";
         try (Connection conn = DatabaseConfig.getConnection();

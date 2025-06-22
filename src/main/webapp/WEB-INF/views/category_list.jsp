@@ -32,7 +32,7 @@
                 <tbody>
                     <c:forEach var="category" items="${categories}">
                         <tr>
-                            <%-- <td>${category.id}</td> --%>
+                            <%-- <td>${category.id}</td> --%>                
                             <td>${category.name}</td>
                             <td>
                                 <span class="badge ${category.type == 'income' ? 'bg-success' : 'bg-danger'}">
@@ -43,7 +43,8 @@
     							</span>
                             </td>
                             <td>
-                                <a href="${pageContext.request.contextPath}/category/delete?id=${category.id}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xoá danh mục này ?');">Xoá</a>
+                            	<%-- <a href="${pageContext.request.contextPath}/transaction/edit?id=${transaction.id}" class="btn btn-sm btn-primary">Edit</a> --%>	
+                                <a href="${pageContext.request.contextPath}/category/delete?id=${category.id}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn chắc chắn muốn xoá danh mục này ?');">Xoá</a>
                             </td>
                         </tr>
                     </c:forEach>

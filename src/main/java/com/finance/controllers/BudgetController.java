@@ -84,7 +84,7 @@ public class BudgetController {
         int userId = user.getUserId();
         // Lấy danh sách các category để hiển thị trên form
         model.addAttribute("categories", categoryService.getAllCategoriesByType(userId, "expense"));
-        return "budget_form"; // Tên file jsp của form thêm ngân sách
+        return "budget_form";
     }
 
     

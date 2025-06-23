@@ -40,11 +40,7 @@ public class BudgetService {
     public List<Budget> getAllBudgets(int userId) {
         return budgetDAO.getAllBudgets(userId);
     }
-	
-//	public void deleteBudget(int id, int userId) {
-//        budgetDAO.deleteBudget(id, userId);
-//    }
-    
+
     public void deleteBudget(int id, int userId) {
         Budget budget = getBudgetById(id, userId);
         if (budget == null) {
@@ -53,11 +49,6 @@ public class BudgetService {
         budgetDAO.deleteBudget(id, userId);
     }
 	
-//	public double getRemainingBudget(int userId) {
-//        return getAllBudgets(userId).stream()
-//                .mapToDouble(b -> b.getAmount() - b.getSpent())
-//                .sum();
-//    }
     public double getRemainingBudget(int userId) {
         return getAllBudgets(userId).stream()
                 .mapToDouble(Budget::getAmount)

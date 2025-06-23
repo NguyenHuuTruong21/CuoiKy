@@ -4,7 +4,6 @@ public class Budget {
 	private int id;
     private Category category;
     private double amount;
-//    private double spent;
     private Status status;
     private int userId;
     
@@ -14,7 +13,6 @@ public class Budget {
 		this.id = id;
 		this.category = category;
 		this.amount = amount;
-//		this.spent = 0;
 		this.status = Status.ToDo;
 	}
 

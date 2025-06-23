@@ -37,13 +37,7 @@ public class ReminderService {
 	public List<Reminder> getAllReminders(int userId) {
         return reminderDAO.getAllReminders(userId);
     }
-	
-//    public List<Reminder> getPendingReminders(int userId) {
-//        return getAllReminders(userId).stream()
-//                .filter(r -> !r.isPaid() && r.getDueDate().isAfter(LocalDate.now().minusDays(1)))
-//                .collect(Collectors.toList());
-//    }
-	
+
 	public List<Reminder> getPendingReminders(int userId) {
 	    LocalDate today = LocalDate.now();
 	    return getAllReminders(userId).stream()
@@ -51,16 +45,6 @@ public class ReminderService {
 	        .collect(Collectors.toList());
 	}
 
-
-//    public void markAsPaid(int id) {
-//        Reminder reminder = getReminderById(id);
-//        if (reminder == null) {
-//            throw new IllegalArgumentException("Reminder not found");
-//        }
-//        reminder.setPaid(true);
-//        reminderDAO.saveReminder(reminder);
-//    }
-	
 	public void markAsPaid(int id, int userId) {
         Reminder reminder = getReminderById(id, userId);
         if (reminder == null) {
@@ -81,9 +65,6 @@ public class ReminderService {
 	        .collect(Collectors.toList());
 	}
 
-	
-	
-
 	public void markNotified(int reminderId, int userId) {
 	    Reminder reminder = getReminderById(reminderId, userId);
 	    if (reminder != null) {
@@ -92,12 +73,6 @@ public class ReminderService {
 	    }
 	}
 
-
-
-//    public void deleteReminder(int id) {
-//        reminderDAO.deleteReminder(id);
-//    }
-	
 	public void deleteReminder(int id, int userId) {
         Reminder reminder = getReminderById(id, userId);
         if (reminder == null) {

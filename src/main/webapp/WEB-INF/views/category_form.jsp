@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${mode == 'edit' ? 'Sửa danh mục' : 'Thêm danh mục'}</title>
+    <title>Thêm danh mục</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -26,10 +26,7 @@
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
         <div class="col-md-6">
             <div class="text-center mb-4">
-                <h1 class="display-6 fw-bold text-primary">
-                    <i class="bi bi-folder-plus"></i>
-                    ${mode == 'edit' ? 'Sửa danh mục' : 'Thêm danh mục'}
-                </h1>
+                <h1 class="display-6 fw-bold text-primary"><i class="bi bi-folder-plus"></i>Thêm danh mục</h1>
             </div>
 
             <c:if test="${not empty error}">
@@ -41,28 +38,22 @@
 
             <div class="card shadow p-4">
                 <div class="card-body">
-                    <form action="${pageContext.request.contextPath}/category/${mode}" method="post">
-                        <c:if test="${mode == 'edit'}">
-                            <input type="hidden" name="id" value="${category.id}" />
-                        </c:if>
+                    <form action="${pageContext.request.contextPath}/category/add" method="post">
                         <div class="mb-3">
                             <label class="form-label">Tên danh mục</label>
-                            <input type="text" name="name" class="form-control" 
-                                   value="${mode == 'edit' ? category.name : ''}" required/>
+                            <input type="text" name="name" class="form-control" required/>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Loại</label>
                             <select name="type" class="form-select" required>
-                                <option value="" disabled ${mode == 'add' ? 'selected' : ''}>Chọn</option>
-                                <option value="income" ${mode == 'edit' && category.type == 'income' ? 'selected' : ''}>Thu nhập</option>
-                                <option value="expense" ${mode == 'edit' && category.type == 'expense' ? 'selected' : ''}>Chi tiêu</option>
+                                <option value="" disabled selected>Chọn</option>
+                                <option value="income">Thu nhập</option>
+                                <option value="expense">Chi tiêu</option>
                             </select>
                         </div>
                         <div class="d-flex justify-content-between">
                             <a href="${pageContext.request.contextPath}/categories" class="btn btn-outline-secondary">Huỷ</a>
-                            <button type="submit" class="btn btn-success">
-                                ${mode == 'edit' ? 'Cập nhật' : 'Thêm'}
-                            </button>
+                            <button type="submit" class="btn btn-success">Thêm</button>
                         </div>
                     </form>
                 </div>

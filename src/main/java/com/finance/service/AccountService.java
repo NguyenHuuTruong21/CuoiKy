@@ -23,11 +23,7 @@ public class AccountService {
         }
         return accountDAO.saveAccount(account);
     }
-	
-//    public Account getAccountById(int id) {
-//        return accountDAO.getAccountById(id);
-//    }
-	
+
 	public Account getAccountById(int id, int userId) {
         Account account = accountDAO.getAccountById(id, userId);
         if (account == null) {
@@ -43,20 +39,7 @@ public class AccountService {
     public void deleteAccount(int id) {
         accountDAO.deleteAccount(id);
     }
-	
-//    public void updateBalance(int id, double amount, String type) {
-//        Account account = getAccountById(id);
-//        if (account == null) {
-//            throw new IllegalArgumentException("Account not found");
-//        }
-//        if ("income".equalsIgnoreCase(type)) {
-//            account.setBalance(account.getBalance() + amount);
-//        } else if ("expense".equalsIgnoreCase(type)) {
-//            account.setBalance(account.getBalance() - amount);
-//        }
-//        accountDAO.saveAccount(account);
-//    }
-    
+
     public double getAccountBalance(int accountId, int userId) {
         Account account = getAccountById(accountId, userId);
         return account.getBalance();

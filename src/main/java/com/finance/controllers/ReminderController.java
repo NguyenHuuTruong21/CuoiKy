@@ -46,29 +46,6 @@ public class ReminderController {
         return "reminder_form";
     }
 
-//    @PostMapping("/reminder/add")
-//    public String addReminder(
-//            @RequestParam("billName") String billName,
-//            @RequestParam("amount") double amount,
-//            @RequestParam("dueDate") String dueDate,
-//            Model model,
-//            HttpSession session) {
-//        try {
-//            User user = (User) session.getAttribute("loggedInUser");
-//            if (user == null) {
-//                return "redirect:/login";
-//            }
-//            int userId = user.getUserId();
-//            LocalDate localDueDate = LocalDate.parse(dueDate);
-//            Reminder reminder = new Reminder(0, billName, amount, localDueDate);
-//            reminderService.saveReminder(reminder);
-//            return "redirect:/reminders";
-//        } catch (Exception e) {
-//            model.addAttribute("error", "Error adding reminder: " + e.getMessage());
-//            return "reminder_form";
-//        }
-//    }
-    
     @PostMapping("/reminder/add")
     public String addReminder(
             @RequestParam("billName") String billName,
@@ -92,25 +69,6 @@ public class ReminderController {
         }
     }
 
-//    @GetMapping("/reminder/markPaid")
-//    public String markAsPaid(
-//            @RequestParam("id") int id,
-//            Model model,
-//            HttpSession session) {
-//        try {
-//            User user = (User) session.getAttribute("loggedInUser");
-//            if (user == null) {
-//                return "redirect:/login";
-//            }
-//            int userId = user.getUserId();
-//            reminderService.markAsPaid(id);
-//            return "redirect:/reminders";
-//        } catch (Exception e) {
-//            model.addAttribute("error", "Error marking reminder as paid: " + e.getMessage());
-//            return "redirect:/reminders";
-//        }
-//    }
-    
     @GetMapping("/reminder/markPaid")
     public String markAsPaid(
             @RequestParam("id") int id,
@@ -129,25 +87,6 @@ public class ReminderController {
             return "reminder_list";
         }
     }
-
-//    @GetMapping("/reminder/delete")
-//    public String deleteReminder(
-//            @RequestParam("id") int id,
-//            Model model,
-//            HttpSession session) {
-//        try {
-//            User user = (User) session.getAttribute("loggedInUser");
-//            if (user == null) {
-//                return "redirect:/login";
-//            }
-//            int userId = user.getUserId();
-//            reminderService.deleteReminder(id);
-//            return "redirect:/reminders";
-//        } catch (Exception e) {
-//            model.addAttribute("error", "Error deleting reminder: " + e.getMessage());
-//            return "redirect:/reminders";
-//        }
-//    }
     
     @GetMapping("/reminder/delete")
     public String deleteReminder(

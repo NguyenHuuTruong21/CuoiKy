@@ -65,23 +65,6 @@ public class CategoryController {
         }
     }
 
-//    @GetMapping("/category/delete")
-//    public String deleteCategory(
-//            @RequestParam("id") int id, Model model, HttpSession session) {
-//        try {
-//            User user = (User) session.getAttribute("loggedInUser");
-//            if (user == null) {
-//                return "redirect:/login";
-//            }
-//            int userId = user.getUserId();
-//            categoryService.deleteCategory(id);
-//            return "redirect:/categories";
-//        } catch (Exception e) {
-//            model.addAttribute("error", "Error deleting category: " + e.getMessage());
-//            return "redirect:/categories";
-//        }
-//    }
-    
     @GetMapping("/category/delete")
     public String deleteCategory(
             @RequestParam("id") int id, Model model, HttpSession session) {

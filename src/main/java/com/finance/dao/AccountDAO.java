@@ -32,26 +32,6 @@ public class AccountDAO {
         }
         throw new RuntimeException("Failed to retrieve generated ID for account");
     }
-
-//    public Account getAccountById(int id) {
-//        String sql = "SELECT * FROM account WHERE id = ?";
-//        try (Connection conn = DatabaseConfig.getConnection();
-//             PreparedStatement stmt = conn.prepareStatement(sql)) {
-//            stmt.setInt(1, id);
-//            ResultSet rs = stmt.executeQuery();
-//            if (rs.next()) {
-//                Account account = new Account();
-//                account.setId(rs.getInt("id"));
-//                account.setName(rs.getString("name"));
-//                account.setBalance(rs.getDouble("balance"));
-//                account.setUserId(rs.getInt("user_id"));
-//                return account;
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException("Error retrieving account: " + e.getMessage(), e);
-//        }
-//        return null;
-//    }
 	
 	public Account getAccountById(int id, int userId) {
         String sql = "SELECT * FROM account WHERE id = ? AND user_id = ?";
@@ -74,28 +54,6 @@ public class AccountDAO {
         return null;
     }
 
-//    public List<Account> getAllAccounts(int userId) {
-//        List<Account> accounts = new ArrayList<>();
-//        String sql = "SELECT a.* FROM account a " +
-//                     "JOIN transaction t ON t.account_id = a.id " +
-//                     "WHERE t.user_id = ?";
-//        try (Connection conn = DatabaseConfig.getConnection();
-//             PreparedStatement stmt = conn.prepareStatement(sql)) {
-//            stmt.setInt(1, userId);
-//            ResultSet rs = stmt.executeQuery();
-//            while (rs.next()) {
-//                Account account = new Account();
-//                account.setId(rs.getInt("id"));
-//                account.setName(rs.getString("name"));
-//                account.setBalance(rs.getDouble("balance"));
-//                accounts.add(account);
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException("Error retrieving accounts: " + e.getMessage(), e);
-//        }
-//        return accounts;
-//    }
-    
     public List<Account> getAllAccounts(int userId) {
         List<Account> accounts = new ArrayList<>();
         String sql = "SELECT * FROM account WHERE user_id = ?";

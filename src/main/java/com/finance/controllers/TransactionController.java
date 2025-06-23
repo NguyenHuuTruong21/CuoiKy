@@ -46,60 +46,6 @@ public class TransactionController {
         model.addAttribute("transaction", new Transaction());
         return "transaction_form";
     }
-
-//    @PostMapping("/transaction/add")
-//    public String addTransaction(
-//            @RequestParam("type") String type,
-//            @RequestParam("amount") double amount,
-//            @RequestParam("date") String date,
-//            @RequestParam("categoryId") int categoryId,
-//            @RequestParam("accountId") int accountId,
-//            @RequestParam(name = "description" ,required = false) String description,
-//            Model model,
-//            HttpSession session) {
-//        try {
-//            User user = (User) session.getAttribute("loggedInUser");
-//            if (user == null) {
-//                return "redirect:/login";
-//            }
-//            int userId = user.getUserId();
-//            LocalDate localDate = LocalDate.parse(date);
-//            transactionService.addTransaction(userId, type, amount, localDate, categoryId, description, accountId);
-//            return "redirect:/transactions";
-//        } catch (Exception e) {
-//            model.addAttribute("error", "Error adding transaction: " + e.getMessage());
-//            return "transaction_form";
-//        }
-//    }
-	
-//	@PostMapping("/transaction/add")
-//    public String addTransaction(
-//            @RequestParam("type") String type,
-//            @RequestParam("amount") double amount,
-//            @RequestParam("date") String date,
-//            @RequestParam("categoryId") int categoryId,
-//            @RequestParam("accountId") int accountId,
-//            @RequestParam(name = "description", required = false) String description,
-//            Model model,
-//            HttpSession session) {
-//        try {
-//            User user = (User) session.getAttribute("loggedInUser");
-//            if (user == null) {
-//                return "redirect:/login";
-//            }
-//            int userId = user.getUserId();
-//            LocalDate localDate = LocalDate.parse(date);
-//            transactionService.addTransaction(userId, type, amount, localDate, categoryId, description, accountId);
-//            return "redirect:/transactions";
-//        } catch (Exception e) {
-//            model.addAttribute("error", e.getMessage());
-//            User user = (User) session.getAttribute("loggedInUser");
-//            int userId = user.getUserId();
-//            model.addAttribute("categories", categoryService.getAllCategories(userId));
-//            model.addAttribute("accounts", accountService.getAllAccounts(userId));
-//            return "transaction_form";
-//        }
-//    }
 	
 	@PostMapping("/transaction/add")
     public String addTransaction(
@@ -157,63 +103,6 @@ public class TransactionController {
 	    model.addAttribute("mode", "edit");
 	    return "transaction_form"; // Tạo file JSP này ở bước sau
 	}
-
-//    @PostMapping("/transaction/update")
-//    public String updateTransaction(
-//            @RequestParam("id") int id,
-//            @RequestParam("type") String type,
-//            @RequestParam("amount") double amount,
-//            @RequestParam("date") String date,
-//            @RequestParam("categoryId") int categoryId,
-//            @RequestParam("accountId") int accountId,
-//            @RequestParam(name = "description", required = false) String description,
-//            Model model,
-//            HttpSession session) {
-//        try {
-//            User user = (User) session.getAttribute("loggedInUser");
-//            if (user == null) {
-//                return "redirect:/login";
-//            }
-//            int userId = user.getUserId();
-//            LocalDate localDate = LocalDate.parse(date);
-//            transactionService.updateTransaction(userId, id, type, amount, localDate, categoryId, description, accountId);
-//            return "redirect:/transactions";
-//        } catch (Exception e) {
-//            model.addAttribute("error", "Error updating transaction: " + e.getMessage());
-//            return "transaction_form";
-//        }
-//    }
-    
-//    @PostMapping("/transaction/update")
-//    public String updateTransaction(
-//            @RequestParam("id") int id,
-//            @RequestParam("type") String type,
-//            @RequestParam("amount") double amount,
-//            @RequestParam("date") String date,
-//            @RequestParam("categoryId") int categoryId,
-//            @RequestParam("accountId") int accountId,
-//            @RequestParam(name = "description", required = false) String description,
-//            Model model,
-//            HttpSession session) {
-//        try {
-//            User user = (User) session.getAttribute("loggedInUser");
-//            if (user == null) {
-//                return "redirect:/login";
-//            }
-//            int userId = user.getUserId();
-//            LocalDate localDate = LocalDate.parse(date);
-//            transactionService.updateTransaction(userId, id, type, amount, localDate, categoryId, description, accountId);
-//            return "redirect:/transactions";
-//        } catch (Exception e) {
-//            model.addAttribute("error", e.getMessage());
-//            User user = (User) session.getAttribute("loggedInUser");
-//            int userId = user.getUserId();
-//            model.addAttribute("categories", categoryService.getAllCategories(userId));
-//            model.addAttribute("accounts", accountService.getAllAccounts(userId));
-//            model.addAttribute("transaction", transactionService.getTransactionById(userId, id));
-//            return "transaction_form";
-//        }
-//    }
     
     @PostMapping("/transaction/update")
     public String updateTransaction(

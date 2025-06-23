@@ -73,28 +73,6 @@ public class CategoryDAO {
         }
         return null;
     }
-
-//    public List<Category> getAllCategories(int userId) {
-//        List<Category> categories = new ArrayList<>();
-//        String sql = "SELECT c.* FROM category c " +
-//                     "JOIN transaction t ON t.category_id = c.id " +
-//                     "WHERE t.user_id = ?";
-//        try (Connection conn = DatabaseConfig.getConnection();
-//             PreparedStatement stmt = conn.prepareStatement(sql)) {
-//            stmt.setInt(1, userId);
-//            ResultSet rs = stmt.executeQuery();
-//            while (rs.next()) {
-//                Category category = new Category();
-//                category.setId(rs.getInt("id"));
-//                category.setName(rs.getString("name"));
-//                category.setType(rs.getString("type"));
-//                categories.add(category);
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException("Error retrieving categories: " + e.getMessage(), e);
-//        }
-//        return categories;
-//    }
     
     public List<Category> getAllCategories(int userId) {
         List<Category> categories = new ArrayList<>();
@@ -116,32 +94,6 @@ public class CategoryDAO {
         }
         return categories;
     }
-
-//    public void deleteCategory(int id) {
-//        String sql = "DELETE FROM category WHERE id = ?";
-//        try (Connection conn = DatabaseConfig.getConnection();
-//             PreparedStatement stmt = conn.prepareStatement(sql)) {
-//            stmt.setInt(1, id);
-//            stmt.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException("Error deleting category: " + e.getMessage(), e);
-//        }
-//    }
-    
-    public void updateCategory(Category category) {
-        String sql = "UPDATE category SET name=?, type=? WHERE id=? AND user_id=?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, category.getName());
-            stmt.setString(2, category.getType());
-            stmt.setInt(3, category.getId());
-            stmt.setInt(4, category.getUserId());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Lỗi khi cập nhật danh mục: " + e.getMessage(), e);
-        }
-    }
-
     
     public void deleteCategory(int id, int userId) {
         String sql = "DELETE FROM category WHERE id = ? AND user_id = ?";

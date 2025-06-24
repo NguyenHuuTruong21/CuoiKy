@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Personal Finance Manager</title>
+    <title>Trang chủ</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -88,7 +88,7 @@
     <div class="bg-white p-3 rounded shadow-sm mb-4 overflow-auto" style="white-space: nowrap;">
         <div class="d-inline-flex gap-2">
             <a href="${pageContext.request.contextPath}/transaction/add" class="btn btn-outline-success">
-                <i class="fas fa-plus-circle"></i>Thêm ghi chép
+                <i class="fas fa-plus-circle"></i>Thêm giao dịch
             </a>
             <a href="${pageContext.request.contextPath}/categories" class="btn btn-outline-warning">
                 <i class="fas fa-tags"></i>Danh mục
@@ -107,34 +107,6 @@
             </a>
         </div>
     </div>
-
-    <%-- <!-- Filter Form for Transactions -->
-    <div class="filter-form">
-        <h5>Filter Transactions</h5>
-        <form action="${pageContext.request.contextPath}/" method="get" class="row g-3">
-            <div class="col-auto">
-                <label for="year" class="visually-hidden">Year</label>
-                <select name="year" id="year" class="form-select">
-                    <option value="">All Years</option>
-                    <c:forEach var="year" begin="2020" end="2025">
-                        <option value="${year}" ${param.year == year ? 'selected' : ''}>${year}</option>
-                    </c:forEach>
-                </select>
-            </div>
-            <div class="col-auto">
-                <label for="month" class="visually-hidden">Month</label>
-                <select name="month" id="month" class="form-select">
-                    <option value="">All Months</option>
-                    <c:forEach var="m" begin="1" end="12">
-                        <option value="${m}" ${param.month == m ? 'selected' : ''}>${m}</option>
-                    </c:forEach>
-                </select>
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary">Filter</button>
-            </div>
-        </form>
-    </div> --%>
     
     <%
     int currentYear = java.time.Year.now().getValue();
@@ -193,7 +165,7 @@
 
     <!-- Transaction List -->
     <div class="section-card">
-        <h4><i class="fas fa-list"></i> Ghi chép gần đây</h4>
+        <h4><i class="fas fa-list"></i> Giao dịch gần đây</h4>
         <c:if test="${not empty transactions and not empty transactions}">
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover">
@@ -226,7 +198,7 @@
                                 <td>${transaction.description}</td>
                                 <td>
                                 	<a href="${pageContext.request.contextPath}/transaction/edit?id=${transaction.id}" class="btn btn-sm btn-warning ms-2">Sửa</a>
-                                    <a href="${pageContext.request.contextPath}/transaction/delete?id=${transaction.id}" class="btn btn-sm btn-danger ms-2" onclick="return confirm('Bạn chắc chắn xoá ghi chép này ?');">Xoá</a>   	
+                                    <a href="${pageContext.request.contextPath}/transaction/delete?id=${transaction.id}" class="btn btn-sm btn-danger ms-2" onclick="return confirm('Bạn chắc chắn xoá giao dịch này ?');">Xoá</a>   	
                                 </td>
                             </tr>
                         </c:forEach>
@@ -236,7 +208,7 @@
         </c:if>
         <c:if test="${empty transactions}">
             <div class="alert alert-warning" role="alert">
-                Không tìm thấy ghi chép
+                Không tìm thấy giao dịch
             </div>
         </c:if>
     </div>
@@ -285,7 +257,7 @@
                     	</c:forEach>
                 	</div>
                 	<div class="modal-footer">
-                    	<a href="${pageContext.request.contextPath}/reminders" class="btn btn-primary">View All Reminders</a>
+                    	<a href="${pageContext.request.contextPath}/reminders" class="btn btn-primary">Xem tích luỹ</a>
                 	</div>
             	</div>
         	</div>

@@ -33,26 +33,6 @@ public class CategoryDAO {
         throw new RuntimeException("Failed to retrieve generated ID for category");
     }
 
-//    public Category getCategoryById(int id) {
-//        String sql = "SELECT * FROM category WHERE id = ?";
-//        try (Connection conn = DatabaseConfig.getConnection();
-//             PreparedStatement stmt = conn.prepareStatement(sql)) {
-//            stmt.setInt(1, id);
-//            ResultSet rs = stmt.executeQuery();
-//            if (rs.next()) {
-//                Category category = new Category();
-//                category.setId(rs.getInt("id"));
-//                category.setName(rs.getString("name"));
-//                category.setType(rs.getString("type"));
-//                category.setUserId(rs.getInt("user_id"));
-//                return category;
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException("Error retrieving category: " + e.getMessage(), e);
-//        }
-//        return null;
-//    }
-	
 	public Category getCategoryById(int id, int userId) {
         String sql = "SELECT * FROM category WHERE id = ? AND user_id = ?";
         try (Connection conn = DatabaseConfig.getConnection();

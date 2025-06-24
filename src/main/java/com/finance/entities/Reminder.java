@@ -12,7 +12,8 @@ public class Reminder {
     private int userId;
     
     public Reminder() {}
-    public Reminder(int id, String billName, double amount, LocalDate dueDate, boolean isPaid, boolean isNotified,  int userId) {
+    public Reminder(int id, String billName, double amount, LocalDate dueDate, 
+    		boolean isPaid, boolean isNotified,  int userId) {
         this.id = id;
         this.billName = billName;
         this.amount = amount;

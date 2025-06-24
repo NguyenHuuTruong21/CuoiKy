@@ -55,7 +55,6 @@ public class BudgetService {
                 .sum();
     }
     
- // Cập nhật trạng thái dựa trên số tiền tích lũy
     public void updateBudgetStatus(Budget budget, double accumulatedAmount) {
         double targetAmount = budget.getAmount();
         if (accumulatedAmount >= targetAmount) {
@@ -68,7 +67,6 @@ public class BudgetService {
         budgetDAO.saveBudget(budget, budget.getUserId());
     }
     
- // Thêm vào cuối file BudgetService.java
     public double getPercentUsed(int userId, int budgetId) {
         Budget budget = getBudgetById(budgetId, userId);
         if (budget == null) return 0.0;

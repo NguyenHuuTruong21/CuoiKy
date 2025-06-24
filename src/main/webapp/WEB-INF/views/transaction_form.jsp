@@ -5,14 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${mode == 'edit' ? "Sửa" : "Thêm"} ghi chép</title>
+    <title>${mode == 'edit' ? "Sửa" : "Thêm"} Giao dịch</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
     <div class="container mt-5">
         <h1 class="display-6 fw-bold mb-4">
             <c:choose>
-                <c:when test="${mode == 'edit'}">Sửa ghi chép</c:when>
+                <c:when test="${mode == 'edit'}">Sửa giao dịch</c:when>
                 <c:otherwise>Thêm ghi chép</c:otherwise>
             </c:choose>
         </h1>

@@ -23,7 +23,7 @@
                     <div class="mb-3">
                         <label class="form-label">Danh mục</label>
                         <select name="categoryId" class="form-select" required>
-                            <option value="" disabled selected>Chọn danh mục cần chi tiêu để đặt ngân sách</option>
+                            <option value="" disabled selected>Đặt ngân sách cho danh mục cần chi tiêu</option>
                             <c:forEach var="cat" items="${categories}">
                                 <option value="${cat.id}">${cat.name}</option>
                             </c:forEach>

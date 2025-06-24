@@ -20,7 +20,6 @@ import com.finance.entities.Status;
 @Repository
 public class BudgetDAO {
 	public int saveBudget(Budget budget, int userId) {
-        // Kiểm tra xem category_id có thuộc về user_id không
         String checkCategorySql = "SELECT id FROM category WHERE id = ? AND user_id = ?";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement checkStmt = conn.prepareStatement(checkCategorySql)) {
@@ -33,11 +32,8 @@ public class BudgetDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error checking category ownership: " + e.getMessage(), e);
         }
-
-        // Kiểm tra xem budget cho category_id đã tồn tại chưa
         Budget existingBudget = getBudgetByCategoryId(budget.getCategory().getId(), userId);
         if (existingBudget != null) {
-            // Cập nhật budget hiện có
             String sql = "UPDATE budget SET amount = ?, status = ? WHERE id = ? AND user_id = ?";
             try (Connection conn = DatabaseConfig.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -54,7 +50,6 @@ public class BudgetDAO {
                 throw new RuntimeException("Error updating budget: " + e.getMessage(), e);
             }
         } else {
-            // Thêm mới budget
             String sql = "INSERT INTO budget (category_id, amount, status, user_id) VALUES (?, ?, ?, ?)";
             try (Connection conn = DatabaseConfig.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

@@ -14,17 +14,18 @@ public class Transaction {
     private int accountId;
     
     public Transaction() {}
-    public Transaction(int id, int userId, String type, double amount, String dateStr, int categoryId, String description, int accountId) {
+    public Transaction(int id, int userId, String type, double amount, 
+    		String dateStr, int categoryId, String description, int accountId) {
         this.id = id;
         this.userId = userId;
         this.type = type;
         this.amount = amount;
         this.date = dateStr != null ? LocalDate.parse(dateStr) : null;
-        this.category = new Category(); // Placeholder, cần gán category thực tế sau
-        this.category.setId(categoryId); // Giả định Category có setId
+        this.category = new Category();
+        this.category.setId(categoryId);
         this.description = description;
-        this.account = new Account(); // Placeholder
-        this.account.setId(accountId); // Giả định Account có setId
+        this.account = new Account();
+        this.account.setId(accountId);
         this.accountId = accountId;
     }
 

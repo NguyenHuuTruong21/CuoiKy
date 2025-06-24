@@ -66,7 +66,7 @@ public class AccountDAO {
                 account.setId(rs.getInt("id"));
                 account.setName(rs.getString("name"));
                 account.setBalance(rs.getDouble("balance"));
-                account.setUserId(rs.getInt("user_id")); // Giả định Account có phương thức setUserId
+                account.setUserId(rs.getInt("user_id"));
                 accounts.add(account);
             }
         } catch (SQLException e) {

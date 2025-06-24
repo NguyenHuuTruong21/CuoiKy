@@ -150,21 +150,11 @@ public class TransactionController {
             }
             int userId = user.getUserId();
             transactionService.deleteTransaction(userId, id);
-            return "redirect:/transactions";
+            return "redirect:/";  
         } catch (Exception e) {
             model.addAttribute("error", "Error deleting transaction: " + e.getMessage());
             return "redirect:/";
         }
     }
 
-    @GetMapping("/transactions")
-    public String listTransactions(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("loggedInUser");
-        if (user == null) {
-            return "redirect:/login";
-        }
-        int userId = user.getUserId();
-        model.addAttribute("transactions", transactionService.getAllTransactions(userId));
-        return "transaction_list";
-    }
 }

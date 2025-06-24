@@ -13,7 +13,7 @@
         <h1 class="display-6 fw-bold mb-4">
             <c:choose>
                 <c:when test="${mode == 'edit'}">Sửa giao dịch</c:when>
-                <c:otherwise>Thêm ghi chép</c:otherwise>
+                <c:otherwise>Thêm giao dịch</c:otherwise>
             </c:choose>
         </h1>
 
@@ -39,7 +39,8 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Số tiền</label>
-                        <input type="number" name="amount" class="form-control" value="${transaction.amount}" placeholder="Nhập số tiền" required step="0.01">
+                        <input type="number" name="amount" class="form-control" value="${transaction.amount}" 
+                        placeholder="Nhập số tiền" required step="0.01">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Ngày nhập</label>
@@ -59,13 +60,15 @@
                         <select name="accountId" class="form-select" required>
                             <option value="" disabled ${empty transaction.account ? 'selected' : ''}>Chọn tài khoản</option>
                             <c:forEach var="acc" items="${accounts}">
-                                <option value="${acc.id}" ${transaction.account.id == acc.id ? 'selected' : ''}>${acc.name} (Balance: ${acc.balance})</option>
+                                <option value="${acc.id}" ${transaction.account.id == acc.id ? 'selected' : ''}>
+                                ${acc.name} (Balance: ${acc.balance})</option>
                             </c:forEach>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Nội dung</label>
-                        <input type="text" name="description" class="form-control" value="${transaction.description}" placeholder="Nhập nội dung(tuỳ chọn)">
+                        <input type="text" name="description" class="form-control" value="${transaction.description}" 
+                        placeholder="Nhập nội dung(tuỳ chọn)">
                     </div>
                     <button type="submit" class="btn btn-primary">
                         ${mode == 'edit' ? "Cập nhật" : "Lưu"}

@@ -36,7 +36,7 @@
 <body>
     <div class="container py-5">
         <div class="form-container">
-            <h1 class="text-center display-6 fw-bold mb-4">🧾 Thêm tài khoảnt</h1>
+            <h1 class="text-center display-6 fw-bold mb-4">🧾 Thêm tài khoản</h1>
 
             <c:if test="${not empty error}">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">

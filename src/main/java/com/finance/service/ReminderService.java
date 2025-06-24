@@ -27,7 +27,7 @@ public class ReminderService {
     }
 	
 	public void updateReminder(Reminder reminder, int userId) {
-	    reminderDAO.updateReminder(reminder); // hoặc truyền userId nếu DAO cần
+	    reminderDAO.updateReminder(reminder); 
 	}
 	
 	public Reminder getReminderById(int id, int userid) {
@@ -58,10 +58,10 @@ public class ReminderService {
 	    List<Reminder> reminders = getAllReminders(userId);
 	    LocalDate today = LocalDate.now();
 	    return reminders.stream()
-	        .filter(r -> !r.isNotified()) // Chưa thông báo
-	        .filter(r -> !r.isPaid())     // Chưa trả
-	        .filter(r -> (r.getDueDate() != null && !today.isBefore(r.getDueDate()))) // Đúng ngày hoặc sau ngày
-	        .filter(r -> totalBalance >= r.getAmount()) // Đủ tiền
+	        .filter(r -> !r.isNotified()) 
+	        .filter(r -> !r.isPaid())     
+	        .filter(r -> (r.getDueDate() != null && !today.isBefore(r.getDueDate())))
+	        .filter(r -> totalBalance >= r.getAmount())
 	        .collect(Collectors.toList());
 	}
 
@@ -69,7 +69,7 @@ public class ReminderService {
 	    Reminder reminder = getReminderById(reminderId, userId);
 	    if (reminder != null) {
 	        reminder.setNotified(true);
-	        updateReminder(reminder, userId); // Update vào DB
+	        updateReminder(reminder, userId); 
 	    }
 	}
 

@@ -159,7 +159,7 @@ public class TransactionService {
                 .sum();
     }
     
-    //lọc theo tháng/năm
+    //lọc theo tháng/năm thu nhập
     public double getTotalIncome(int userId, Integer year, Integer month) {
         return getAllTransactions(userId).stream()
             .filter(t -> "income".equalsIgnoreCase(t.getType()))
@@ -169,7 +169,7 @@ public class TransactionService {
             .sum();
     }
 
-    //lọc theo tháng/năm
+    //lọc theo tháng/năm chi tiêu
     public double getTotalExpenses(int userId, Integer year, Integer month) {
         return getAllTransactions(userId).stream()
             .filter(t -> "expense".equalsIgnoreCase(t.getType()))

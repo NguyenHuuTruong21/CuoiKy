@@ -89,7 +89,7 @@
                             <tr>
                                 <th>Tích luỹ cho việc gì</th>
                                 <th>Số tiền cần tích luỹ</th>
-                                <th>Hen vào ngày</th>
+                                <th>Hẹn vào ngày</th>
                                 <th>Trạng thái</th>
                                 <th>Tuỳ chọn</th>
                             </tr>

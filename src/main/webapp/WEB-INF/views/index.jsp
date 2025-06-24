@@ -137,7 +137,6 @@
             %>
         </select>
     </div>
-    
     <div class="col-auto">
         <label for="year" class="visually-hidden">Year</label>
         <select name="year" id="year" class="form-select" style="min-width: 130px;">
@@ -197,7 +196,8 @@
                                 <td>${transaction.account.name}</td>
                                 <td>${transaction.description}</td>
                                 <td>
-                                	<a href="${pageContext.request.contextPath}/transaction/edit?id=${transaction.id}" class="btn btn-sm btn-warning ms-2">Sửa</a>
+                                	<a href="${pageContext.request.contextPath}/transaction/edit?id=${transaction.id}" 
+                                	class="btn btn-sm btn-warning ms-2">Sửa</a>
                                     <a href="${pageContext.request.contextPath}/transaction/delete?id=${transaction.id}" class="btn btn-sm btn-danger ms-2" onclick="return confirm('Bạn chắc chắn xoá giao dịch này ?');">Xoá</a>   	
                                 </td>
                             </tr>

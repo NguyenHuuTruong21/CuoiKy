@@ -44,7 +44,8 @@
             							</c:if>
                                     </td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/budget/delete?id=${budget.id}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn chắc chắn muốn xoá ngân sách này ?');">Xoá</a>
+                                        <a href="${pageContext.request.contextPath}/budget/delete?id=${budget.id}" 
+                                        class="btn btn-sm btn-danger" onclick="return confirm('Bạn chắc chắn muốn xoá ngân sách này ?');">Xoá</a>
                                     </td>
                                 </tr>
                             </c:forEach>

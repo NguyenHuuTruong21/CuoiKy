@@ -66,7 +66,7 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Income by Category',
+                    label: 'Báo cáo thu nhập',
                     data: data,
                     backgroundColor: colorPalette,
                     borderColor: '#fff',

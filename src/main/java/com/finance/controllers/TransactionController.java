@@ -74,11 +74,9 @@ public class TransactionController {
                 model.addAttribute("accounts", accountService.getAllAccounts(userId));
                 return "transaction_form";
             }
-
             // Lưu giao dịch
             Transaction transaction = new Transaction(0, userId, type, amount, date, categoryId, description, accountId);
             transactionService.saveTransaction(transaction, userId);
-
             return "redirect:/";
         } catch (Exception e) {
             model.addAttribute("error", "Error adding transaction: " + e.getMessage());
@@ -133,7 +131,7 @@ public class TransactionController {
             int currentUserId = currentUser.getUserId();
             model.addAttribute("categories", categoryService.getAllCategories(currentUserId));
             model.addAttribute("accounts", accountService.getAllAccounts(currentUserId));
-            model.addAttribute("transaction", new Transaction(id, currentUserId, type, amount, date, categoryId, description, accountId)); // Sử dụng dữ liệu mới từ form
+            model.addAttribute("transaction", new Transaction(id, currentUserId, type, amount, date, categoryId, description, accountId)); 
             return "/";
         }
     }
@@ -156,5 +154,4 @@ public class TransactionController {
             return "redirect:/";
         }
     }
-
 }
